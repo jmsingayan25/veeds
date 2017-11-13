@@ -10,7 +10,7 @@
 	}
 
 	$_POST['user_id'] = "271";
-	$_POST['keyword'] = "Alimall, Quezon City";
+	$_POST['keyword'] = "Gateway, Quezon City";
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 
 		// $placeIdDetail = new classPlaceID;
