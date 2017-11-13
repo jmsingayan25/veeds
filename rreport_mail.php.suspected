@@ -1,0 +1,33 @@
+<?php
+	include("jp_library/jp_lib.php");
+	
+	
+	if(isset($_POST['user_id'])){
+		$user['select'] = "firstname, lastname, username";
+		$user['table'] = "veeds_users";
+		$user['where'] = "user_id = '".$_POST['user_id']."'";
+		$result = jp_get($user);
+		$row = mysqli_fetch_assoc($result);
+		
+		$headers = "MIME-Version: 1.0" . "\r \n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r \n";
+		$headers .= "From: noreply@veeds.com" . "\r \n";
+						
+		$to = "jpang@myoptimind.com";
+		
+		$subject = "[Veeds] User Reported";
+
+		$message = "<html><body>Hi, <br />";
+		$message .= "For your immediate action, please review ".$row['firstname']." ".$row['lastname']."(".$row['username'].")'s profile as the account has been reported for possible inappropriate video(s) content. <br />";
+		$message .= "In the account that action is necessary, please click on the link below to disable the user's account: <br />";
+		$message .= "<a href='http://ec2-52-74-167-235.ap-southeast-1.compute.amazonaws.com/testvideo/ban_user.php?uid=".$_POST['user_id']."'>http://ec2-52-74-167-235.ap-southeast-1.compute.amazonaws.com/testvideo/ban_user.php?uid=".$_POST['user_id']."</a> <br />";
+		$message .= "Thank You!	</body></html>";
+				
+		mail($to,$subject,$message,$headers);
+					
+		$reply = array('reply' => '1');
+			
+		
+		echo json_encode($reply);
+	}
+?>
