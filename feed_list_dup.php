@@ -6,8 +6,8 @@
 	if(empty($_POST['count']) || !isset($_POST['count'])){
 		$_POST['count'] = 0;
 	}
-	$_POST['user_id'] = "2";
-	$_POST['logged_id'] = "2";
+	$_POST['user_id'] = "271";
+	$_POST['logged_id'] = "271";
 	$_POST['coordinates'] = "14.5910630605843,121.12628397653";
 	$_POST['city'] = "Cainta";
 	if(isset($_POST['user_id'])){
@@ -44,29 +44,31 @@
 		// 						AND a.user_id != '".$_POST['logged_id']."' 
 		// 						AND b.disabled = 0"; 
 		// $search100['where'] = "a.user_id = b.user_id AND a.user_id IN (".$in.") AND b.disabled = 0
-		// 						AND a.user_id != '".$_POST['logged_id']."'
-		// 						AND a.date_upload IN (SELECT MAX(date_upload) 
-		// 						                      FROM veeds_videos
-		// 						                      WHERE user_id IN (".$in.")
-		// 						                      AND place_id != ''
-		// 						                      GROUP BY place_id)"; 
+		// 					AND a.user_id != '".$_POST['logged_id']."'
+		// 					AND a.date_upload IN (SELECT MAX(date_upload) 
+		// 					                      FROM veeds_videos
+		// 					                      WHERE user_id IN (".$in.")
+		// 					                      AND place_id != ''
+		// 					                      GROUP BY place_id)"; 
+
 		$search100['where'] = "a.user_id = b.user_id 
+								AND a.user_id IN (".$in.")
 								AND a.place_id != ''
 								AND a.user_id != '".$_POST['logged_id']."'
 								AND b.disabled = 0
-								OR (a.video_id IN (SELECT DISTINCT video_id 
-													FROM veeds_video_tags 
-													WHERE user_id IN (".$in."))
-								OR a.user_id IN (".$in."))
 								AND a.date_upload IN (SELECT MAX(date_upload) 
 								                      FROM veeds_videos
 								                      WHERE user_id IN (".$in.")
 								                      AND place_id != ''
-								                      GROUP BY place_id)";
+								                      GROUP BY place_id)
+								OR a.video_id IN (SELECT DISTINCT video_id 
+													FROM veeds_video_tags 
+													WHERE user_id IN (".$in.")
+								)";
 		$start = $_POST['count'] * 100;
 		$search100['filters'] = "GROUP BY a.place_id ORDER BY a.date_upload DESC LIMIT ".$start.", 100";
 		// $search100['filters'] = "ORDER BY a.date_upload DESC LIMIT 1";
-		echo implode(" ", $search100);
+		// echo implode(" ", $search100);
 		$result = jp_get($search100);
 		
 		$list = array();
@@ -340,12 +342,10 @@
 		foreach($vals_explode as $word) {
 		    $result[$word]++;
 		}
-		// echo implode(" ", $result);
-		// echo $vals;
+
 		$users = implode(",", $array['users_follow']);
 		$users_not_follow = implode(",", $array['users_not_follow']);
 		$hashtags_implode = implode(" ", $array['hashtags']);
-		// echo $hashtags_implode;
 
 /*
 	Get places based on location
@@ -486,6 +486,16 @@
 */
 		$search5['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
 		$search5['table'] = "veeds_establishment e, veeds_users_visit_history h, veeds_videos v";
+		// $search5['where'] = "h.place_id = e.place_id
+		// 						AND h.video_id = v.video_id
+		// 						AND h.place_id != ''
+		// 						AND e.location LIKE '%".$_POST['city']."%'
+		// 						AND h.user_id IN (".$users.")
+		// 						AND date_visit IN (SELECT MAX(date_visit) 
+		// 											FROM veeds_users_visit_history
+  //     												WHERE user_id IN (".$users.") 
+  //     												GROUP BY place_id)
+  //     							AND AND DATE_FORMAT(date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
 		$search5['where'] = "h.place_id = e.place_id
 								AND h.video_id = v.video_id
 								AND h.place_id != ''
@@ -495,7 +505,7 @@
 													FROM veeds_users_visit_history
       												WHERE user_id IN (".$users.") 
       												GROUP BY place_id)";
-		$search5['filters'] = "GROUP BY h.place_id LIMIT 1";
+		// $search5['filters'] = "GROUP BY h.place_id LIMIT 1";
 		// echo implode(" ", $search5);		
 		if(jp_count($search5) > 0){	// display place id if no posts associated to the city existed in database
 
@@ -973,78 +983,64 @@
 			}
 		}
 
-		$search38['select'] = "COUNT(DISTINCT place_id) as place_count";
-		$search38['table'] = "veeds_users_visit_history";
-		$search38['where'] = "user_id = '".$_POST['user_id']."'";
+		// $search37['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
+		// $search37['table'] = "veeds_establishment e, veeds_users_visit_history h, veeds_videos v";
+		// // $search37['where'] = "h.place_id = e.place_id
+		// // 						AND h.video_id = v.video_id
+		// // 						AND h.user_id IN (".$users.")
+		// // 						AND h.place_id NOT IN (SELECT place_id 
+		// // 												FROM veeds_users_visit_history 
+		// // 												WHERE user_id = '".$_POST['user_id']."')
+		// // 						AND (hashtags LIKE '%".$final_word."%' OR place_name LIKE '%".$final_word."%')
+		// // 							AND date_visit IN (SELECT MAX(date_visit)
+ 	// // 												FROM veeds_users_visit_history
+  // // 													WHERE user_id IN (".$users.")
+ 	// // 												GROUP BY place_id)
+ 	// // 							AND DATE_FORMAT(date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
+		// $search37['where'] = "h.place_id = e.place_id
+		// 						AND h.video_id = v.video_id
+		// 						AND h.place_id != ''
+		// 						AND h.user_id IN (".$users.")
+		// 						AND h.place_id NOT IN (SELECT place_id 
+		// 												FROM veeds_users_visit_history 
+		// 												WHERE user_id = '".$_POST['user_id']."')
+		// 						AND date_visit IN (SELECT MAX(date_visit)
+ 	// 												FROM veeds_users_visit_history
+  // 													WHERE user_id IN (".$users.")
+ 	// 												GROUP BY place_id)";
+		// $search37['filters'] = "GROUP BY h.place_id";
+		// // echo implode(" ", $search37)."<br>";
+		// if(jp_count($search37) > 0){
 
-		$count_result = jp_get($search38);
-		$place_count = mysqli_fetch_assoc($count_result);
+ 	// 		$result37 = jp_get($search37);
+ 	// 		while ($row37 = mysqli_fetch_assoc($result37)) {
 
-		//	$vals = number of unique tags of establishment
-		//	User has followed users and has visited 	less than 10 unique places
-		// if($hashtags_implode == "''" && $users != "''" && $post_count['place_count'] < 10){
-		// if($hashtags_implode == "''" && $users != "''" && $vals == "''"){
-		if($users != "''" && $place_count['place_count'] < 10){
+ 	// 			if(!in_array($row37['location_id'],$location['location'])){
+		// 			$location['location'][] = $row37['location_id'];
+				
+		// 			// $placeIdDetail->setPlaceId($row37['place_id']);
+		// 			// $placeName = $placeIdDetail->getPlaceName();
 
-			$search37['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
-			$search37['table'] = "veeds_establishment e, veeds_users_visit_history h, veeds_videos v";
-			// $search37['where'] = "h.place_id = e.place_id
-			// 						AND h.video_id = v.video_id
-			// 						AND h.user_id IN (".$users.")
-			// 						AND h.place_id NOT IN (SELECT place_id 
-			// 												FROM veeds_users_visit_history 
-			// 												WHERE user_id = '".$_POST['user_id']."')
-			// 						AND (hashtags LIKE '%".$final_word."%' OR place_name LIKE '%".$final_word."%')
-			// 							AND date_visit IN (SELECT MAX(date_visit)
-	 	// 												FROM veeds_users_visit_history
-	  // 													WHERE user_id IN (".$users.")
-	 	// 												GROUP BY place_id)
-	 	// 							AND DATE_FORMAT(date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
-			$search37['where'] = "h.place_id = e.place_id
-									AND h.video_id = v.video_id
-									AND h.place_id != ''
-									AND h.user_id IN (".$users.")
-									AND h.place_id NOT IN (SELECT place_id 
-															FROM veeds_users_visit_history 
-															WHERE user_id = '".$_POST['user_id']."')
-									AND date_visit IN (SELECT MAX(date_visit)
-	 													FROM veeds_users_visit_history
-	  													WHERE user_id IN (".$users.")
-	 													GROUP BY place_id)";
-			$search37['filters'] = "GROUP BY h.place_id";
-			// echo implode(" ", $search37)."<br>";
-			if(jp_count($search37) > 0){
+		// 			$row37 = array(
+		// 						'location_id' => $row37['location_id'],
+		// 						'place_id' => $row37['place_id'],
+		// 						// 'place_name' => $placeName,
+		// 						// 'place_name' => $row37['place_name'],
+		// 						'coordinates' => $row37['coordinates'],
+		// 						'user_id' => $row37['user_id'],
+		// 						'video_id' => $row37['video_id'],
+		// 						'video_thumb' => $row37['video_thumb'],
+		// 						'date_upload' => $row37['date_upload'],
+		// 						'date_expiry' => $row37['date_expiry'],
+		// 						'logged_id' => $_POST['user_id']
+		// 					);
 
-	 			$result37 = jp_get($search37);
-	 			while ($row37 = mysqli_fetch_assoc($result37)) {
-
-	 				if(!in_array($row37['location_id'],$location['location'])){
-						$location['location'][] = $row37['location_id'];
-					
-						// $placeIdDetail->setPlaceId($row37['place_id']);
-						// $placeName = $placeIdDetail->getPlaceName();
-
-						$row37 = array(
-									'location_id' => $row37['location_id'],
-									'place_id' => $row37['place_id'],
-									// 'place_name' => $placeName,
-									// 'place_name' => $row37['place_name'],
-									'coordinates' => $row37['coordinates'],
-									'user_id' => $row37['user_id'],
-									'video_id' => $row37['video_id'],
-									'video_thumb' => $row37['video_thumb'],
-									'date_upload' => $row37['date_upload'],
-									'date_expiry' => $row37['date_expiry'],
-									'logged_id' => $_POST['user_id']
-								);
-
-		 				// if(!in_array($row37, $list['places'])){
-		 					$list['places'][] = $row37;
-		 				// }
-					}
-	 			}
-	 		}
-		}
+	 // 				// if(!in_array($row37, $list['places'])){
+	 // 					$list['places'][] = $row37;
+	 // 				// }
+		// 		}
+ 	// 		}
+ 	// 	}
 
 		if(!empty($location['location'])){
 			$location_ext = " AND e.location_id IN (".implode(",", $location['location']).")";
@@ -1132,7 +1128,7 @@
 */		
 		sleep(2);
 		$nearbySearchCoordinatesObj1->setCoordinates($_POST['coordinates']);
-		$placeID1 = $nearbySearchCoordinatesObj1->getPlaceId();
+		$placeID = $nearbySearchCoordinatesObj1->getPlaceId();
 
 		$search19['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
 		$search19['table'] = "veeds_establishment e, veeds_users_visit_history h, veeds_videos v";
@@ -1147,7 +1143,7 @@
 		$search19['where'] = "h.place_id = e.place_id
 								AND h.video_id = v.video_id
 								AND h.place_id != ''
-								AND h.place_id = '".$placeID1."'
+								AND h.place_id = '".$placeID."'
 								AND h.user_id IN (".$users_not_follow.")
 								AND date_visit IN (SELECT MAX(date_visit) 
 															FROM veeds_users_visit_history
@@ -1266,6 +1262,16 @@
 */
 		$search22['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
 		$search22['table'] = "veeds_establishment e, veeds_users_visit_history h, veeds_videos v";
+		// $search22['where'] = "h.place_id = e.place_id
+		// 						AND h.video_id = v.video_id
+		// 						AND h.place_id != ''
+		// 						AND e.location LIKE '%".$_POST['city']."%'
+		// 						AND h.user_id IN (".$users_not_follow.")
+		// 						AND date_visit IN (SELECT MAX(date_visit) 
+		// 											FROM veeds_users_visit_history
+  //     												WHERE user_id IN (".$users_not_follow.") 
+  //     												GROUP BY place_id)
+  //     							AND AND DATE_FORMAT(date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
 		$search22['where'] = "h.place_id = e.place_id
 								AND h.video_id = v.video_id
 								AND h.place_id != ''
@@ -1274,7 +1280,8 @@
 								AND date_visit IN (SELECT MAX(date_visit) 
 													FROM veeds_users_visit_history
       												WHERE user_id IN (".$users_not_follow.") 
-      												GROUP BY place_id)";
+      												GROUP BY place_id)
+      							AND AND DATE_FORMAT(date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
 		$search22['filters'] = "GROUP BY h.place_id LIMIT 1";
 					
 		if(jp_count($search22) > 0){	// display place id if no posts associated to the city existed in database
@@ -1511,14 +1518,14 @@
 						// Hashtags used by not followed user
 						$row27['hashtags'] = str_replace("#", "", $row27['hashtags']);
 						// Compare hashtags between the user and not followed user and get similar hashtags
-						$hashtags_word = checkHashtagExist(strtolower($hashtags[$i]),strtolower($row27['hashtags']));
-						if(!empty($hashtags_word)){
-							$hashtags_word = implode("", $hashtags_word);
+						$hashtags_word2 = checkHashtagExist(strtolower($hashtags[$i]),strtolower($row27['hashtags']));
+						if(!empty($hashtags_word2)){
+							$hashtags_word2 = implode("", $hashtags_word2);
 						}
 
-						if($hashtags_word != "" || $hashtags_word != NULL){
-							if(substr($hashtags_word,0,1) == "#"){
-								$hashtags_word = str_replace("#", "", $hashtags_word);
+						if($hashtags_word2 != "" || $hashtags_word2 != NULL){
+							if(substr($hashtags_word2,0,1) == "#"){
+								$hashtags_word2 = str_replace("#", "", $hashtags_word2);
 							}
 /* 
 		Display places and post thumbnail based on not followed users who visited a particular place and its type of establishment based on hashtags. Places who already visited by the user will be excluded
@@ -1531,7 +1538,7 @@
 							// 						AND h.place_id NOT IN (SELECT place_id 
 							// 												FROM veeds_users_visit_history 
 							// 												WHERE user_id = '".$_POST['user_id']."')
-							// 						AND hashtags LIKE '%".$hashtags_word."%'
+							// 						AND hashtags LIKE '%".$hashtags_word2."%'
 				 		// 							AND date_visit IN (SELECT MAX(date_visit)
 					 	// 												FROM veeds_users_visit_history
 					  // 													WHERE user_id IN (".$users_not_follow.")
@@ -1544,7 +1551,7 @@
 													AND h.place_id NOT IN (SELECT place_id 
 																			FROM veeds_users_visit_history 
 																			WHERE user_id = '".$_POST['user_id']."')
-													AND hashtags LIKE '%".$hashtags_word."%'
+													AND hashtags LIKE '%".$hashtags_word2."%'
 				 									AND date_visit IN (SELECT MAX(date_visit)
 					 													FROM veeds_users_visit_history
 					  													WHERE user_id IN (".$users_not_follow.")
@@ -1584,14 +1591,14 @@
 					 		}
 						}
 						// Compare hashtags between the user and not followed user and get similar hashtags
-						$hashtags_word1 = checkHashtagExist1(strtolower($hashtags[$i]),strtolower($row27['hashtags']));
-						if(!empty($hashtags_word1)){
-							$hashtags_word1 = implode("", $hashtags_word1);
+						$hashtags_word3 = checkHashtagExist1(strtolower($hashtags[$i]),strtolower($row27['hashtags']));
+						if(!empty($hashtags_word3)){
+							$hashtags_word3 = implode("", $hashtags_word3);
 						}
 
-						if($hashtags_word1 != "" || $hashtags_word1 != NULL){
-							if(substr($hashtags_word1,0,1) == "#"){
-								$hashtags_word1 = str_replace("#", "", $hashtags_word1);
+						if($hashtags_word3 != "" || $hashtags_word3 != NULL){
+							if(substr($hashtags_word3,0,1) == "#"){
+								$hashtags_word3 = str_replace("#", "", $hashtags_word3);
 							}
 
 /* 
@@ -1605,7 +1612,7 @@
 							// 						AND h.place_id NOT IN (SELECT place_id 
 							// 												FROM veeds_users_visit_history 
 							// 												WHERE user_id = '".$_POST['user_id']."')
-							// 						AND hashtags LIKE '%".$hashtags_word1."%'
+							// 						AND hashtags LIKE '%".$hashtags_word3."%'
 				 		// 							AND date_visit IN (SELECT MAX(date_visit)
 					 	// 												FROM veeds_users_visit_history
 					  // 													WHERE user_id IN (".$users_not_follow.")
@@ -1618,7 +1625,7 @@
 													AND h.place_id NOT IN (SELECT place_id 
 																			FROM veeds_users_visit_history 
 																			WHERE user_id = '".$_POST['user_id']."')
-													AND hashtags LIKE '%".$hashtags_word1."%'
+													AND hashtags LIKE '%".$hashtags_word3."%'
 				 									AND date_visit IN (SELECT MAX(date_visit)
 					 													FROM veeds_users_visit_history
 					  													WHERE user_id IN (".$users_not_follow.")

@@ -43,13 +43,28 @@
 		// 						AND a.place_id != '' 
 		// 						AND a.user_id != '".$_POST['logged_id']."' 
 		// 						AND b.disabled = 0"; 
-		$search100['where'] = "a.user_id = b.user_id AND a.user_id IN (".$in.") AND b.disabled = 0
-							AND a.user_id != '".$_POST['logged_id']."'
-							AND a.date_upload IN (SELECT MAX(date_upload) 
-							                      FROM veeds_videos
-							                      WHERE user_id IN (".$in.")
-							                      AND place_id != ''
-							                      GROUP BY place_id)"; 
+		// $search100['where'] = "a.user_id = b.user_id AND a.user_id IN (".$in.") AND b.disabled = 0
+		// 					AND a.user_id != '".$_POST['logged_id']."'
+		// 					AND a.date_upload IN (SELECT MAX(date_upload) 
+		// 					                      FROM veeds_videos
+		// 					                      WHERE user_id IN (".$in.")
+		// 					                      AND place_id != ''
+		// 					                      GROUP BY place_id)"; 
+
+		$search100['where'] = "a.user_id = b.user_id 
+								AND a.user_id IN (".$in.")
+								AND a.place_id != ''
+								AND a.user_id != '".$_POST['logged_id']."'
+								AND b.disabled = 0
+								AND a.date_upload IN (SELECT MAX(date_upload) 
+								                      FROM veeds_videos
+								                      WHERE user_id IN (".$in.")
+								                      AND place_id != ''
+								                      GROUP BY place_id)
+								OR a.video_id IN (SELECT DISTINCT video_id 
+													FROM veeds_video_tags 
+													WHERE user_id IN (".$in.")
+								)";
 		$start = $_POST['count'] * 100;
 		$search100['filters'] = "GROUP BY a.place_id ORDER BY a.date_upload DESC LIMIT ".$start.", 100";
 		// $search100['filters'] = "ORDER BY a.date_upload DESC LIMIT 1";
