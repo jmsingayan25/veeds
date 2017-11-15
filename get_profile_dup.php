@@ -5,14 +5,15 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "183";
-	$_POST['logged_id'] = "271";
+	$_POST['user_id'] = "182";
+	$_POST['logged_id'] = "183";
 
 	if(isset($_POST['user_id'])){
 		$user_id = $_POST['user_id'];
 		$search['select'] = "a.video_id, a.video_name, a.description, a.video_id, b.firstname, b.lastname, a.date_upload, a.view_count, a.video_thumb, a.location, b.profile_pic, a.video_length, b.username, a.user_id AS uploader_user_id, a.landscape_file, a.timestamp";
 		$search['table'] = "veeds_users b, veeds_videos a";
-		$search['where'] = "a.user_id = '".$_POST['user_id']."' AND a.user_id = b.user_id"; 
+		$search['where'] = "a.user_id = '".$_POST['user_id']."' 
+							AND a.user_id = b.user_id"; 
 		$start = $_POST['count'] * 30;
 		
 		$search['filters'] = "ORDER BY a.date_upload DESC LIMIT ".$start.", 30";
@@ -232,7 +233,8 @@
 		$user_id = $_POST['user_id'];
 		$search['select'] = "a.video_id, a.video_name, a.description, a.video_id, b.firstname, b.lastname, a.date_upload, a.view_count, a.video_thumb, a.location, b.profile_pic, a.video_length, b.username, a.user_id AS uploader_user_id, a.landscape_file";
 		$search['table'] = "veeds_users b, veeds_videos a";
-		$search['where'] = "b.username = '".$_POST['username']."' AND a.user_id = b.user_id"; 
+		$search['where'] = "b.username = '".$_POST['username']."' 
+							AND a.user_id = b.user_id"; 
 		$start = $_POST['count'] * 10;
 		
 		$search['filters'] = "ORDER BY a.date_upload DESC LIMIT ".$start.", 10";

@@ -4,10 +4,10 @@
 
 	$_POST['user_id'] = "183";
 	$_POST['place_id'] = "ChIJS4PaboC4lzMRNjesQNda8jA";
-	$_POST['location'] = "Cambridge Cainta, Philippines";
+	// $_POST['location'] = "Cambridge Cainta, Philippines";
 	if(isset($_POST['place_id'])){
 
-		$location = str_replace("'","\'",$_POST['location']);
+		// $location = str_replace("'","\'",$_POST['location']);
 		$array = array();
 		$list = array();
 		$u_blocks = array();

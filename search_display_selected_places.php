@@ -228,7 +228,8 @@
 			$search['table'] = "veeds_establishment e, veeds_users u, veeds_videos v";
 			$search['where'] = "v.place_id = e.place_id 
 								AND v.user_id = u.user_id
-								AND v.location LIKE '%".$explode_city[$i]."%'";
+								AND (v.location LIKE '%".$explode_city[$i]."%'
+								OR e.place_name LIKE '%".$explode_city[$i]."%')";
 			$search['filters'] = "GROUP BY location_id ORDER BY date_upload DESC";
 			// echo implode(" ", $search);
 			if(jp_count($search) > 0){

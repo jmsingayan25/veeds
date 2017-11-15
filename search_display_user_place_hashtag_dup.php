@@ -13,6 +13,7 @@
 	$_POST['user_id'] = "182";
 	$_POST['keyword'] = "allen";
 	$_POST['coordinates'] = "14.590843,121.126404";
+	
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 		
 		$_POST['keyword'] = str_replace("`", "'", $_POST['keyword']);
@@ -147,6 +148,7 @@
 				}
 			}
 		}
+		
 		sleep(2);
 		$hostname = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=".str_replace(" ", "+", $_POST['keyword'])."&location=".$_POST['coordinates']."&radius=500&key=AIzaSyCWURxddYHkkejBOFqA31s3yiRXr2BzEWM"; 
 
