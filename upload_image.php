@@ -228,7 +228,7 @@
 									$push = array();
 									$push['reciever_id'] = $notif_data['user_id'];
 									$push['video_id'] = $video_id;
-									$push['body'] = $user_row['name']." tagged you in a video.";
+									$push['body'] = $user_row['name']." tagged you in a post.";
 									$push['type'] = "tag";
 									$push['image'] = 'http://ec2-52-40-31-134.us-west-2.compute.amazonaws.com/veeds/profile_pics/'.$user_row['profile_pic'];
 					

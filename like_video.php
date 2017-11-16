@@ -108,7 +108,7 @@
 							$push = array();
 							$push['reciever_id'] = $notif_data['user_id'];
 							$push['video_id'] = $_POST['video_id'];
-							$push['body'] = $user_row['name']." liked your video";
+							$push['body'] = $user_row['name']." liked your post.";
 							$push['type'] = "like";
 							$push['image'] = 'http://ec2-52-40-31-134.us-west-2.compute.amazonaws.com/veeds/profile_pics/'.$user_row['profile_pic'];
 							$didSendNotif['device_ids'] = $device_ids;

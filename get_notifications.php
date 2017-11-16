@@ -20,11 +20,11 @@
 		$list['notifications'] = array();
 		
 		$types = array(
-			'like' => ' liked your video.',
+			'like' => ' liked your post.',
 			'started_following' => ' started following you.',
 			'accepted' => ' has accept your follow request.',
-			'comment' => ' commented on your video.',
-			'tag' => ' tagged you in a video.',
+			'comment' => ' commented on your post.',
+			'tag' => ' tagged you in a post.',
 			'request' => ' has requested to follow you.'
 		);
 		

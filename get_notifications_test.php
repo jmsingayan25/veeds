@@ -5,7 +5,7 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "182";
+	$_POST['user_id'] = "183";
 	if(isset($_POST['user_id'])){
 		
 		$search['select'] = "a.type, a.notif_datetime, b.username, b.firstname, b.lastname, b.profile_pic, a.activity_user, a.video_id, a.notif_id";
@@ -20,11 +20,11 @@
 		$list['notifications'] = array();
 		
 		$types = array(
-			'like' => ' liked your video.',
+			'like' => ' liked your post.',
 			'started_following' => ' started following you.',
 			'accepted' => ' has accept your follow request.',
-			'comment' => ' commented on your video.',
-			'tag' => ' tagged you in a video.',
+			'comment' => ' commented on your post.',
+			'tag' => ' tagged you in a post.',
 			'request' => ' has requested to follow you.'
 		);
 		

@@ -72,7 +72,7 @@
 								$push = array();
 								$push['reciever_id'] = $notif_data['user_id'];
 								$push['video_id'] = $_POST['video_id'];
-								$push['body'] = $user_row['name']." tagged you in a video.";
+								$push['body'] = $user_row['name']." tagged you in a post.";
 								$push['type'] = "tag";
 								$push['image'] = 'http://ec2-52-40-31-134.us-west-2.compute.amazonaws.com/veeds/profile_pics/'.$user_row['profile_pic'];
 
@@ -131,7 +131,7 @@
 						$push = array();
 						$push['reciever_id'] = $notif_data['user_id']; //owner that will receive notification
 						$push['video_id'] = $_POST['video_id'];
-						$push['body'] = $user_row['username']." commented on your video.";
+						$push['body'] = $user_row['username']." commented on your post.";
 						$push['type'] = "comment";
 						$push['image'] = 'http://ec2-52-40-31-134.us-west-2.compute.amazonaws.com/veeds/profile_pics/'.$user_row['profile_pic'];
 						$list['push'][] = $push;
@@ -186,7 +186,8 @@
 								$push = array();
 								$push['reciever_id'] = $notif_data['user_id']; //users that will receive notification
 								$push['video_id'] = $_POST['video_id'];
-								$push['body'] = $user_row['username']." also commented on the live photo you are following.";
+								$push['body'] = $user_row['username']." also commented on the post you are following.";
+								// $push['body'] = $user_row['username']." also commented on the live photo you are following.";
 								$push['type'] = "comment";
 								$push['image'] = 'http://ec2-52-40-31-134.us-west-2.compute.amazonaws.com/veeds/profile_pics/'.$user_row['profile_pic'];
 								//$list['push'][] = $notif['data'];
@@ -246,7 +247,8 @@
 							$push = array();
 							$push['reciever_id'] = $notif_data['user_id'];
 							$push['video_id'] = $_POST['video_id'];
-							$push['body'] = $user_row['username']." also commented on the live photo you are following.";
+							$push['body'] = $user_row['username']." also commented on the post you are following.";
+							// $push['body'] = $user_row['username']." also commented on the live photo you are following.";
 							$push['type'] = "comment";
 							$push['image'] = 'http://ec2-52-40-31-134.us-west-2.compute.amazonaws.com/veeds/profile_pics/'.$user_row['profile_pic'];
 							$list['push'][] = $push;
