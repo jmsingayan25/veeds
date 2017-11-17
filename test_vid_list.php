@@ -102,7 +102,9 @@
 		$search['select'] = "DISTINCT v.video_id, v.video_name, v.video_file, v.description, v.video_thumb, v.date_upload, v.video_length, v.view_count, v.location, v.place_id, v.landscape_file, v.timestamp, v.user_id as uploader_user_id, u.username, u.firstname, u.lastname, u.profile_pic, u.personal_information";
 		$search['table'] = "veeds_videos v, veeds_users u";
 		$search['where'] = "v.user_id = u.user_id AND v.video_id IN (".implode(",",$array_data).")";
-		$search['filters'] = "ORDER BY find_in_set(v.video_id,'".implode(",",$array_data)."') LIMIT ".$start.", 15";
+		// $search['filters'] = "ORDER BY find_in_set(v.video_id,'".implode(",",$array_data)."') LIMIT ".$start.", 15";
+		$search['filters'] = "ORDER BY v.date_upload DESC LIMIT ".$start.", 15";
+
 		// echo implode(" ", $search);
 		$result = jp_get($search);
 
