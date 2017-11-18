@@ -10,7 +10,7 @@
 	}
 
 	$_POST['user_id'] = "183";
-	$_POST['keyword'] = "quezon";
+	$_POST['keyword'] = "Dona Imelda, Quezon City, Philippines";
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 
 		// $placeIdDetail = new classPlaceID;
@@ -203,13 +203,32 @@
 		// 	}
 		// }	
 
+		$search2['select'] = "country_name";
+		$search2['table'] = "veeds_countries";
+		$search2['filters'] = "ORDER BY country_id";
+
+		$result2 = jp_get($search2);
+		while ($row2 = mysqli_fetch_assoc($result2)) {
+			$list_of_countries[] = $row2['country_name'];
+		}
+
+		foreach ($list_of_countries as $key => $value) {
+			// echo $value."<br>";
+			if(strpos($_POST['keyword'], $value) !== FALSE){
+				// echo $value;
+				$_POST['keyword'] = str_replace($value, "", $_POST['keyword']);
+				$_POST['keyword'] = rtrim($_POST['keyword'],", ");
+			}
+		}
+
 		$explode_city = explode(",", $_POST['keyword']);
 		for($i = 0; $i < count($explode_city); $i++){
 			
-			if(strpos($explode_city[$i], 'City') !== FALSE){
-				$explode_city[$i] = str_replace(" City", "", $explode_city[$i]);
-			}
+			// if(strpos($explode_city[$i], 'City') !== FALSE){
+			// 	$explode_city[$i] = str_replace(" City", "", $explode_city[$i]);
+			// }
 			// echo $explode_city[$i]."<br>";
+
 			$search['select'] = "location_id, v.user_id, v.place_id, e.place_name, v.location as address, v.coordinates, firstname, lastname, username, profile_pic, video_id, video_name, description, v.video_file, video_thumb, date_upload, date_expiry, view_count, like_count, video_length, landscape_file";
 			$search['table'] = "veeds_establishment e, veeds_users u, veeds_videos v";
 			$search['where'] = "v.place_id = e.place_id 

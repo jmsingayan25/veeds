@@ -217,19 +217,29 @@
 		// 	}	
 		// }
 
+		$search2['select'] = "country_name";
+		$search2['table'] = "veeds_countries";
+		$search2['filters'] = "ORDER BY country_id";
+
+		$result2 = jp_get($search2);
+		while ($row2 = mysqli_fetch_assoc($result2)) {
+			$list_of_countries[] = $row2['country_name'];
+		}
+
+		foreach ($list_of_countries as $key => $value) {
+			// echo $value."<br>";
+			if(strpos($_POST['keyword'], $value) !== FALSE){
+				// echo $value;
+				$_POST['keyword'] = str_replace($value, "", $_POST['keyword']);
+				$_POST['keyword'] = rtrim($_POST['keyword'],", ");
+			}
+		}
+		
 		$explode_city = explode(",", $_POST['keyword']);
 		for($i = 0; $i < count($explode_city); $i++){
 			
 			if(strpos($explode_city[$i], 'City') !== FALSE){
 				$explode_city[$i] = str_replace(" City", "", $explode_city[$i]);
-			}
-
-			$search0['select'] = "country_name";
-			$search0['table'] = "veeds_countries";
-
-			$result0 = jp_get($search0);
-			while ($row0 = mysqli_fetch_assoc($search0)) {
-				$list_of_countries[] = $row0['country_name'];
 			}
 			
 			// echo $explode_city[$i]."<br>";
