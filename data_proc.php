@@ -689,27 +689,43 @@
 			// else
 			// 	$reply = array('reply' => '2');
 		}elseif(isset($_POST['private'])){
-			$search['table'] = $data['table'];
+
+			if($_POST['private'] == 0)
+				$_POST['private'] = false;
+			else
+				$_POST['private'] = true;
+
 			$search['data'] = $_POST;
+			$search['table'] = $data['table'];
 			$search['where'] = "user_id = '".$_POST['user_id']."'";
 
 			if(jp_update($search))
-				$reply = array('reply' => true);
+				$reply = array('result' => true, 'private' => $_POST['private']);
 			else
 				$reply = array('reply' => false);
-		}elseif(isset($_POST['notif_toggle'])){
-			$search['select'] = "notifications";
-			$search['table'] = $data['table'];
-			$search['where'] = "user_id = '".$_POST['user_id']."'";
 
-			$result = jp_get($search);
-			$row = mysqli_fetch_assoc($result);
-			if($row['notifications'] == 0)
-				$_POST['notifications'] = 1;
+		}elseif(isset($_POST['notif_toggle'])){
+			// $search['select'] = "notifications";
+			// $search['table'] = $data['table'];
+			// $search['where'] = "user_id = '".$_POST['user_id']."'";
+
+			// $result = jp_get($search);
+			// $row = mysqli_fetch_assoc($result);
+			// if($row['notifications'] == 0)
+			// 	$_POST['notifications'] = false;
+			// 	// $_POST['notifications'] = 0;
+			// else
+			// 	// $_POST['notifications'] = 1;
+			// 	$_POST['notifications'] = true;
+
+			if($_POST['notif_toggle'] == 0)
+				$_POST['notifications'] = false;
 			else
-				$_POST['notifications'] = 0;
+				$_POST['notifications'] = true;
 
 			$search['data'] = $_POST;
+			$search['table'] = $data['table'];
+			$search['where'] = "user_id = '".$_POST['user_id']."'";
 
 			if(jp_update($search))
 				$reply = array('result' => 'true', 'notification' => $_POST['notifications']);
