@@ -6,8 +6,8 @@
 	if(empty($_POST['count']) || !isset($_POST['count'])){
 		$_POST['count'] = 0;
 	}
-	$_POST['user_id'] = "200";
-	$_POST['logged_id'] = "200";
+	$_POST['user_id'] = "49";
+	$_POST['logged_id'] = "49";
 	$_POST['coordinates'] = "14.5910630605843,121.12628397653";
 	$_POST['city'] = "Cainta";
 	if(isset($_POST['user_id'])){
