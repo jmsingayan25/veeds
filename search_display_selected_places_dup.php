@@ -10,7 +10,7 @@
 	}
 
 	$_POST['user_id'] = "183";
-	$_POST['keyword'] = "Dona Imelda, Quezon City, Philippines";
+	$_POST['keyword'] = "Dona Imelda, Quezon City, Metro Manila, Philippines";
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 
 		// $placeIdDetail = new classPlaceID;
