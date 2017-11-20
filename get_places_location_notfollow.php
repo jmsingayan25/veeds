@@ -4,7 +4,6 @@
 
 	if(isset($_POST['place_id'])){
 
-		// $location = str_replace("'","\'",$_POST['location']);
 		$array = array();
 		$list = array();
 		$u_blocks = array();
@@ -93,7 +92,7 @@
 		$search3['select'] = " h.place_id, e.place_name, e.location, e.coordinates, v.video_id, v.video_name, v.description, v.video_file, v.video_thumb, v.date_upload, v.view_count, v.like_count, v.video_length, v.landscape_file, v.user_id";
 		$search3['table'] = "veeds_users u, veeds_videos v, veeds_establishment e, veeds_users_visit_history h";
 		// $search3['where'] = "h.user_id = u.user_id
-		// 						AND h.place_id = v.place_id
+		// 						AND h.video_id = v.video_id
 		// 						AND h.place_id = e.place_id
 		// 						AND h.user_id IN (".$users.")
 		// 						AND h.place_id = '".$_POST['place_id']."'

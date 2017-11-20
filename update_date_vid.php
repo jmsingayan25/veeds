@@ -42,41 +42,6 @@
 			$update['table'] = "veeds_videos";
 			$update['where'] = "user_id = '".$_POST['uploader_user_id']."' AND video_id = '".$_POST['video_id']."'"; 
 			jp_update($update);
-	
-			// $code = array('user_id' => $_POST['user_id'], 'video_id' => $_POST['video_id'], 
-			// 				'viewed_at' => date("Y-m-d H:i:s"));
-			// $data['data'] = $code;
-			// $data['table'] = "veeds_live_photo_viewer";
-			// // $data['viewed_at'] = date("Y-m-d H:i:s");
-			// if (jp_add($data)) {
-			// 	$reply = array('view' => 'true', 'post' => $_POST);
-			// }else{
-			// 	$reply = array('view' => 'false', 'post' => $_POST);
-			// }
-
-			// $search['table'] = "veeds_live_photo_viewer";
-			// $search['where'] = "user_id = '".$_POST['user_id']."' AND video_id = '".$_POST['video_id']."'"; 
-
-			// if(jp_count($search) == 0){
-
-			// 	$search1['select'] = "view_count";
-			// 	$search1['table'] = "veeds_videos";
-			// 	$search1['where'] = "user_id = '".$_POST['uploader_user_id']."' AND video_id = '".$_POST['video_id']."'"; 
-
-			// 	$result1 = jp_get($search1);
-			// 	$row1 = mysqli_fetch_assoc($result1);
-
-			// 	$view_count = array();
-			// 	$view_count['view_count'] = $row1['view_count'] + 1;
-			// 	$update['table'] = "veeds_videos";
-			// 	$update['data'] = $view_count;
-			// 	$update['where'] = "user_id = '".$_POST['uploader_user_id']."' AND video_id = '".$_POST['video_id']."'"; 
-				
-			// 	if(jp_update($update)){
-			// 		$reply = array('reply' => 1, 'message' => 'View count updated');
-			// 	}else{
-			// 		$reply = array('reply' => 0, 'message' => 'Update failed');
-			// 	}
 		}
 		echo json_encode($reply);
 	}

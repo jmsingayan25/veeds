@@ -4,7 +4,6 @@
 
 	if(isset($_POST['place_id'])){
 
-		// $location = str_replace("'","\'",$_POST['location']);
 		$array = array();
 		$list = array();
 		$u_blocks = array();

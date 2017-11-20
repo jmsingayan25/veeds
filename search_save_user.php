@@ -55,44 +55,4 @@
 		
 		echo json_encode($reply);
 	}
-	// if(isset($_POST['user_id']) && isset($_POST['searched_user_id'])){
-
-	// 	$reply = array();
-
-	//     $search['select'] = "user_id, user_id_search";
-	// 	$search['table'] = "veeds_users_history";
-	// 	$search['where'] = "user_id = '".$_POST['user_id']."' AND user_id_search = '".$_POST['searched_user_id']."'";
-
-	// 	if(jp_count($search) > 0){
-
-	// 		$data['data'] = array('search_date' => $_POST['search_date']);
-	// 		$data['table'] = "veeds_users_history";
-	// 		$data['where'] = "user_id = '".$_POST['user_id']."' AND user_id_search = '".$_POST['searched_user_id']."'";
-
-	// 		// $reply = array('data' => $data);
-	// 		if(jp_update($data)){
-	// 			$reply = array('reply' => 'Update Success');
-	// 		}else{
-	// 			$reply = array('reply' => 'Update Failed');
-	// 		}
-	// 	}else{
-
-	// 	    $data['data'] = array(
-	// 	    					'user_id' => $_POST['user_id'], 
-	// 	    					'user_id_search' => $_POST['searched_user_id'], 
-	// 	    					'search_date' => $_POST['search_date']
-	// 	    				);
-	// 	    $data['table'] = "veeds_users_history";
-		    
-	// 		// $reply = array('data' => $data);
-	// 		if(jp_add($data)){
-	// 			$reply = array('reply' => 'Add Success');
-	// 		}else{
-	// 			$reply = array('reply' => 'Add Failed');
-	// 		}
-	// 	}
-
-		// echo json_encode($reply);
-	// }
-
 ?>

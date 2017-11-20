@@ -65,19 +65,6 @@
 					$data5['table'] = "veeds_establishment";
 					jp_add($data5);
 				}
-				// else{
-				// 	$result3 = jp_get($search1);
-				// 	while($row3 = mysqli_fetch_assoc($result3)){
-				// 		if($row3['place_id'] == NULL){
-				// 			$update_place_id = array();
-				// 			$update_place_id['place_id'] = $_GET['place_id'];
-				// 			$update['data'] = $update_place_id;
-				// 			$update['table'] = "veeds_establishment";
-				// 			$update['where'] = "location_id = '".$row3['location_id']."'";
-				// 			jp_update($update);
-				// 		}
-				// 	}
-				// }
 
 				$data3['data'] = array(
 									'place_id' => $_GET['place_id'], 

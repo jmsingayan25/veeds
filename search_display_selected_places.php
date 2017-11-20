@@ -227,9 +227,7 @@
 		}
 
 		foreach ($list_of_countries as $key => $value) {
-			// echo $value."<br>";
 			if(strpos($_POST['keyword'], $value) !== FALSE){
-				// echo $value;
 				$_POST['keyword'] = str_replace($value, "", $_POST['keyword']);
 				$_POST['keyword'] = rtrim($_POST['keyword'],", ");
 			}
@@ -242,7 +240,6 @@
 				$explode_city[$i] = str_replace(" City", "", $explode_city[$i]);
 			}
 			
-			// echo $explode_city[$i]."<br>";
 			$search['select'] = "location_id, v.user_id, v.place_id, e.place_name, v.location as address, v.coordinates, firstname, lastname, username, profile_pic, video_id, video_name, description, v.video_file, video_thumb, date_upload, date_expiry, view_count, like_count, video_length, landscape_file";
 			$search['table'] = "veeds_establishment e, veeds_users u, veeds_videos v";
 			$search['where'] = "v.place_id = e.place_id 
@@ -273,16 +270,11 @@
 					}else{
 						$row['like_type'] = "";
 					}
-					
-					// sleep(2);
-					// $placeIdDetail->setPlaceId($row['place_id']);
-					// $placeName = $placeIdDetail->getPlaceName();
 
 					$row = array(
 									'category' => "Places",
 									'location_id' => $row['location_id'],
 									'place_id' => $row['place_id'],
-									// 'place_name' => $placeName,
 									'place_name' => $row['place_name'],
 									'user_id' => $row['user_id'],
 									'firstname' => $row['firstname'],
