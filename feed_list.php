@@ -356,14 +356,6 @@
 
 		$search2['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
 		$search2['table'] = "veeds_establishment e, veeds_users_visit_history h, veeds_videos v";
-		// $search2['where'] = "h.place_id = e.place_id
-		// 						AND h.video_id = v.video_id
-		// 						AND e.coordinates = '".$_POST['coordinates']."'
-		// 						AND h.user_id IN (".$users.",".$_POST['user_id'].")
-		// 						AND date_visit IN (SELECT MAX(date_visit) 
-		// 													FROM veeds_users_visit_history
-  //             												WHERE user_id IN (".$users.") 
-  //             												GROUP BY place_id)";
 		$search2['where'] = "h.place_id = e.place_id
 								AND h.video_id = v.video_id
 								AND h.place_id != ''
@@ -383,15 +375,9 @@
 				if(!in_array($row2['location_id'],$location['location'])){
 					$location['location'][] = $row2['location_id'];
 
-					// sleep(2);
-					// $placeIdDetail->setPlaceId($row2['place_id']);
-					// $placeName = $placeIdDetail->getPlaceName();
-
 					$row2 = array(
 									'location_id' => $row2['location_id'],
 									'place_id' => $row2['place_id'],
-									// 'place_name' => $placeName,
-									// 'place_name' => $row2['place_name'],
 									'coordinates' => $row2['coordinates'],
 									'user_id' => $row2['user_id'],
 									'video_id' => $row2['video_id'],
@@ -404,83 +390,6 @@
 				}
 			}
 		}
-		// else{
-			
-		// 	sleep(2);
-		// 	$nearbySearchCoordinatesObj->setCoordinates($_POST['coordinates']);
-		// 	$placeID = $nearbySearchCoordinatesObj->getPlaceId();
-		// 	$placeName = $nearbySearchCoordinatesObj->getPlaceName();
-		// 	$placeCoordinates = $nearbySearchCoordinatesObj->getPlaceCoordinates();
-		// 	$placeAddress = $nearbySearchCoordinatesObj->getPlaceAddress();
-
-		// 	$search3['select'] = "location_id, place_id";
-		// 	$search3['table'] = "veeds_establishment";
-		// 	$search3['where'] = "place_id = '".$placeID."'";
-		// 	$search3['filters'] = "GROUP BY place_id LIMIT 1";
-	
-		// 	if(jp_count($search3) > 0){
-
-		// 		$result3 = jp_get($search3);
-		// 		while ($row3 = mysqli_fetch_assoc($result3)) {
-		// 			if(!in_array($row3['location_id'],$location['location'])){
-		// 				$location['location'][] = $row3['location_id'];
-
-		// 				$row3 = array(
-		// 								'location_id' => $row3['location_id'],
-		// 								'place_id' => $row3['place_id'],
-		// 								// 'place_name' => $placeName,
-		// 								'coordinates' => $placeCoordinates,
-		// 								'user_id' => "",
-		// 								'video_id' => "",
-		// 								'video_thumb' => "",
-		// 								'date_upload' => "",
-		// 								'date_expiry' => "",
-		// 								'logged_id' => $_POST['user_id']
-		// 							);	
-		// 				$list['places'][] = $row3;	
-		// 			}	
-		// 		}
-		// 	}else{
-
-		// 		if($placeID != ''){
-
-		// 			// $code = array('place_id' => $placeID);
-		// 			$code = array('place_id' => $placeID, 'coordinates' => $placeCoordinates, 'location' => $placeAddress);
-		// 			$data['data'] = $code;
-		// 			$data['table'] = "veeds_establishment";
-		// 			jp_add($data);
-					
-		// 			$search4['select'] = "location_id, place_id";
-		// 			$search4['table'] = "veeds_establishment";
-		// 			$search4['where'] = "place_id = '".$placeID."'";
-		// 			$search4['filters'] = "GROUP BY place_id LIMIT 1";
-
-		// 			if(jp_count($search4) > 0){
-
-		// 				$result4 = jp_get($search4);
-		// 				while ($row4 = mysqli_fetch_assoc($result4)) {
-		// 					if(!in_array($row4['location_id'],$location['location'])){
-		// 						$location['location'][] = $row4['location_id'];
-
-		// 						$row4 = array(
-		// 										'location_id' => $row4['location_id'],
-		// 										'place_id' => $row4['place_id'],
-		// 										// 'place_name' => $placeName,
-		// 										'coordinates' => $placeCoordinates,
-		// 										'user_id' => "",
-		// 										'video_id' => "",
-		// 										'video_thumb' => "",
-		// 										'date_upload' => "",
-		// 										'date_expiry' => "",
-		// 										'logged_id' => $_POST['user_id']
-		// 									);	
-		// 						$list['places'][] = $row4;	
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	}	
-		// }
 /*
 	Get place based on region
 */
@@ -515,15 +424,9 @@
 				if(!in_array($row5['location_id'],$location['location'])){
 					$location['location'][] = $row5['location_id'];
 
-					// sleep(2);
-					// $placeIdDetail->setPlaceId($row5['place_id']);
-					// $placeName = $placeIdDetail->getPlaceName();
-
 					$row5 = array(
 									'location_id' => $row5['location_id'],
 									'place_id' => $row5['place_id'],
-									// 'place_name' => $placeName,
-									// 'place_name' => $row5['place_name'],
 									'coordinates' => $row5['coordinates'],
 									'user_id' => $row5['user_id'],
 									'video_id' => $row5['video_id'],
@@ -536,123 +439,6 @@
 				}
 			}
 		}
-		// else{ 
-
-		// 	$search6['select'] = "place_id, place_name, coordinates, location_id";
-		// 	$search6['table'] = "veeds_establishment";
-		// 	$search6['where'] = "location LIKE '%".$_POST['city']."%' AND place_id != ''";
-		// 	$search6['filters'] = "GROUP BY place_id LIMIT 1";
-
-		// 	// display place id if there is an existing data on the database regardless if there is no post associated
-		// 	if(jp_count($search6) > 0){	
-
-		// 		$result6 = jp_get($search6);
-		// 		while ($row6 = mysqli_fetch_assoc($result6)) {
-					
-		// 			if(!in_array($row6['location_id'],$location['location'])){
-		// 				$location['location'][] = $row6['location_id'];
-
-		// 				// sleep(2);
-		// 				// $placeIdDetail->setPlaceId($row6['place_id']);
-		// 				// $placeName = $placeIdDetail->getPlaceName();
-
-		// 				$row6 = array(
-		// 								'location_id' => $row6['location_id'],
-		// 								'place_id' => $row6['place_id'],
-		// 								// 'place_name' => $placeName,
-		// 								// 'place_name' => $row6['place_name'],
-		// 								'coordinates' => $row6['coordinates'],
-		// 								'user_id' => "",
-		// 								'video_id' => "",
-		// 								'video_thumb' => "",
-		// 								'date_upload' => "",
-		// 								'date_expiry' => "",
-		// 								'logged_id' => $_POST['user_id']
-		// 							);
-		// 				$list['places'][] = $row6;
-		// 			}
-		// 		}
-		// 	// get place id from google
-		// 	}else{
-				
-		// 		sleep(2);
-		// 		$nearbySearchCoordinatesCityObj->setCoordinatesCity($_POST['coordinates'],$_POST['city']);
-		// 		$cityPlaceID = $nearbySearchCoordinatesCityObj->getPlaceId();
-		// 		$cityPlaceName = $nearbySearchCoordinatesCityObj->getPlaceName();
-		// 		$cityPlaceCoordinates = $nearbySearchCoordinatesCityObj->getPlaceCoordinates();
-		// 		$cityPlaceAddress = $nearbySearchCoordinatesCityObj->getPlaceAddress();
-				
-		// 		$search7['select'] = "location_id, place_id";
-		// 		$search7['table'] = "veeds_establishment";
-		// 		$search7['where'] = "place_id = '".$cityPlaceID."'";
-		// 		$search7['filters'] = "GROUP BY place_id LIMIT 1";
-		// 		// display place id if there is existing data on the database
-		// 		if(jp_count($search7) > 0){
-
-		// 			$result7 = jp_get($search7);
-		// 			while ($row7 = mysqli_fetch_assoc($result7)) {
-		// 				if(!in_array($row7['location_id'],$location['location'])){
-		// 					$location['location'][] = $row7['location_id'];
-
-		// 					$row7 = array(
-		// 									'location_id' => $row7['location_id'],
-		// 									'place_id' => $row7['place_id'],
-		// 									// 'place_name' => $cityPlaceName,
-		// 									'coordinates' => $cityPlaceCoordinates,
-		// 									'user_id' => "",
-		// 									'video_id' => "",
-		// 									'video_thumb' => "",
-		// 									'date_upload' => "",
-		// 									'date_expiry' => "",
-		// 									'logged_id' => $_POST['user_id']
-		// 								);
-		// 					$list['places'][] = $row7;
-		// 				}		
-		// 			}
-		// 		}else{
-
-		// 			if($cityPlaceID != ''){
-
-		// 				// $code = array('place_id' => $cityPlaceID);
-		// 				$code = array('place_id' => $cityPlaceID, 'coordinates' => $cityPlaceCoordinates, 'location' => $cityPlaceAddress);
-		// 				$data['data'] = $code;
-		// 				$data['table'] = "veeds_establishment";
-		// 				jp_add($data);
-
-		// 				// $newCityPlaceID = jp_last_added();
-
-		// 				$search8['select'] = "location_id, place_id";
-		// 				$search8['table'] = "veeds_establishment";
-		// 				$search8['where'] = "place_id = '".$cityPlaceID."'";
-		// 				$search8['filters'] = "GROUP BY place_id LIMIT 1";
-
-		// 				if(jp_count($search8) > 0){
-
-		// 					$result8 = jp_get($search8);
-		// 					while ($row8 = mysqli_fetch_assoc($result8)) {
-		// 						if(!in_array($row8['location_id'],$location['location'])){
-		// 							$location['location'][] = $row8['location_id'];
-
-		// 							$row8 = array(
-		// 										'location_id' => $row8['location_id'],
-		// 										'place_id' => $row8['place_id'],
-		// 										// 'place_name' => $cityPlaceName,
-		// 										'coordinates' => $cityPlaceCoordinates,
-		// 										'user_id' => "",
-		// 										'video_id' => "",
-		// 										'video_thumb' => "",
-		// 										'date_upload' => "",
-		// 										'date_expiry' => "",
-		// 										'logged_id' => $_POST['user_id']
-		// 									);	
-		// 							$list['places'][] = $row8;
-		// 						}	
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// }
 
 		foreach($result as $tags => $count) {
 			if($tags == "''"){
@@ -695,15 +481,10 @@
 
               			if(!in_array($row9['location_id'],$location['location'])){
 							$location['location'][] = $row9['location_id'];
-						
-							// $placeIdDetail->setPlaceId($row9['place_id']);
-							// $placeName = $placeIdDetail->getPlaceName();
-
+					
 							$row9 = array(
 								'location_id' => $row9['location_id'],
 								'place_id' => $row9['place_id'],
-								// 'place_name' => $placeName,
-								// 'place_name' => $row9['place_name'],
 								'coordinates' => $row9['coordinates'],
 								'user_id' => $row9['user_id'],
 								'video_id' => $row9['video_id'],
@@ -713,9 +494,7 @@
 								'logged_id' => $_POST['user_id']
 							);
 
-	              			// if(!in_array($row9, $list['places'])){
-	              				$list['places'][] = $row9;
-	              			// }
+              				$list['places'][] = $row9;
 						}	
               		}
               	}
@@ -789,14 +568,9 @@
 					 				if(!in_array($row11['location_id'],$location['location'])){
 										$location['location'][] = $row11['location_id'];
 
-										// $placeIdDetail->setPlaceId($row11['place_id']);
-										// $placeName = $placeIdDetail->getPlaceName();
-
 										$row11 = array(
 													'location_id' => $row11['location_id'],
 													'place_id' => $row11['place_id'],
-													// 'place_name' => $placeName,
-													// 'place_name' => $row11['place_name'],
 													'coordinates' => $row11['coordinates'],
 													'user_id' => $row11['user_id'],
 													'video_id' => $row11['video_id'],
@@ -806,9 +580,7 @@
 													'logged_id' => $_POST['user_id']
 												);
 
-						 				// if(!in_array($row11, $list['places'])){
-						 					$list['places'][] = $row11;
-						 				// }
+					 					$list['places'][] = $row11;
 									}
 					 			}
 					 		}
@@ -863,9 +635,6 @@
 					 				if(!in_array($row12['location_id'],$location['location'])){
 										$location['location'][] = $row12['location_id'];
 									
-										// $placeIdDetail->setPlaceId($row12['place_id']);
-										// $placeName = $placeIdDetail->getPlaceName();
-
 										$row12 = array(
 													'location_id' => $row12['location_id'],
 													'place_id' => $row12['place_id'],
@@ -879,9 +648,8 @@
 													'date_expiry' => $row12['date_expiry'],
 													'logged_id' => $_POST['user_id']
 												);
-						 				// if(!in_array($row12, $list['places'])){
-						 					$list['places'][] = $row12;
-						 				// }
+
+						 				$list['places'][] = $row12;
 									}
 					 			}
 					 		}
@@ -955,15 +723,10 @@
 
 			 				if(!in_array($row14['location_id'],$location['location'])){
 								$location['location'][] = $row14['location_id'];
-							
-								// $placeIdDetail->setPlaceId($row14['place_id']);
-								// $placeName = $placeIdDetail->getPlaceName();
 
 								$row14 = array(
 											'location_id' => $row14['location_id'],
 											'place_id' => $row14['place_id'],
-											// 'place_name' => $placeName,
-											// 'place_name' => $row14['place_name'],
 											'coordinates' => $row14['coordinates'],
 											'user_id' => $row14['user_id'],
 											'video_id' => $row14['video_id'],
@@ -973,9 +736,7 @@
 											'logged_id' => $_POST['user_id']
 										);
 
-				 				// if(!in_array($row14, $list['places'])){
-				 					$list['places'][] = $row14;
-				 				// }
+				 				$list['places'][] = $row14;
 							}
 			 			}
 			 		}
@@ -1100,7 +861,7 @@
 
 				$result18 = jp_get($search18);
 				$row18 = mysqli_fetch_assoc($result18);
-				// $row15['logged_id'] = $_POST['user_id'];
+
 				$row15 = array(
 								'firstname' => $row15['firstname'],
 								'lastname' => $row15['lastname'],
@@ -1132,14 +893,6 @@
 
 		$search19['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
 		$search19['table'] = "veeds_establishment e, veeds_users_visit_history h, veeds_videos v";
-		// $search19['where'] = "h.place_id = e.place_id
-		// 						AND h.video_id = v.video_id
-		// 						AND e.coordinates = '".$_POST['coordinates']."'
-		// 						AND h.user_id IN (".$users.",".$_POST['user_id'].")
-		// 						AND date_visit IN (SELECT MAX(date_visit) 
-		// 													FROM veeds_users_visit_history
-  //             												WHERE user_id IN (".$users.") 
-  //             												GROUP BY place_id)";
 		$search19['where'] = "h.place_id = e.place_id
 								AND h.video_id = v.video_id
 								AND h.place_id != ''
@@ -1159,15 +912,9 @@
 				if(!in_array($row19['location_id'],$location1['location'])){
 					$location1['location'][] = $row19['location_id'];
 
-					// sleep(19);
-					// $placeIdDetail->setPlaceId($row19['place_id']);
-					// $placeName = $placeIdDetail->getPlaceName();
-
 					$row19 = array(
 									'location_id' => $row19['location_id'],
 									'place_id' => $row19['place_id'],
-									// 'place_name' => $placeName,
-									// 'place_name' => $row19['place_name'],
 									'coordinates' => $row19['coordinates'],
 									'user_id' => $row19['user_id'],
 									'video_id' => $row19['video_id'],
@@ -1180,83 +927,6 @@
 				}
 			}
 		}
-		// else{
-			
-		// 	sleep(2);
-		// 	$nearbySearchCoordinatesObj1->setCoordinates($_POST['coordinates']);
-		// 	$placeID = $nearbySearchCoordinatesObj1->getPlaceId();
-		// 	$placeName = $nearbySearchCoordinatesObj1->getPlaceName();
-		// 	$placeCoordinates = $nearbySearchCoordinatesObj1->getPlaceCoordinates();
-		// 	$placeAddress = $nearbySearchCoordinatesObj1->getPlaceAddress();
-
-		// 	$search20['select'] = "location_id, place_id";
-		// 	$search20['table'] = "veeds_establishment";
-		// 	$search20['where'] = "place_id = '".$placeID."'";
-		// 	$search20['filters'] = "GROUP BY place_id LIMIT 1";
-	
-		// 	if(jp_count($search20) > 0){
-
-		// 		$result20 = jp_get($search20);
-		// 		while ($row20 = mysqli_fetch_assoc($result20)) {
-		// 			if(!in_array($row20['location_id'],$location1['location'])){
-		// 				$location1['location'][] = $row20['location_id'];
-
-		// 				$row20 = array(
-		// 								'location_id' => $row20['location_id'],
-		// 								'place_id' => $row20['place_id'],
-		// 								// 'place_name' => $placeName,
-		// 								'coordinates' => $placeCoordinates,
-		// 								'user_id' => "",
-		// 								'video_id' => "",
-		// 								'video_thumb' => "",
-		// 								'date_upload' => "",
-		// 								'date_expiry' => "",
-		// 								'logged_id' => $_POST['user_id']
-		// 							);	
-		// 				$list['world_places'][] = $row20;	
-		// 			}	
-		// 		}
-		// 	}else{
-
-		// 		if($placeID != ''){
-
-		// 			// $code = array('place_id' => $placeID);
-		// 			$code = array('place_id' => $placeID, 'coordinates' => $placeCoordinates, 'location' => $placeAddress);
-		// 			$data['data'] = $code;
-		// 			$data['table'] = "veeds_establishment";
-		// 			jp_add($data);
-					
-		// 			$search21['select'] = "location_id, place_id";
-		// 			$search21['table'] = "veeds_establishment";
-		// 			$search21['where'] = "place_id = '".$placeID."'";
-		// 			$search21['filters'] = "GROUP BY place_id LIMIT 1";
-
-		// 			if(jp_count($search21) > 0){
-
-		// 				$result21 = jp_get($search21);
-		// 				while ($row21 = mysqli_fetch_assoc($result21)) {
-		// 					if(!in_array($row21['location_id'],$location1['location'])){
-		// 						$location1['location'][] = $row21['location_id'];
-
-		// 						$row21 = array(
-		// 										'location_id' => $row21['location_id'],
-		// 										'place_id' => $row21['place_id'],
-		// 										// 'place_name' => $placeName,
-		// 										'coordinates' => $placeCoordinates,
-		// 										'user_id' => "",
-		// 										'video_id' => "",
-		// 										'video_thumb' => "",
-		// 										'date_upload' => "",
-		// 										'date_expiry' => "",
-		// 										'logged_id' => $_POST['user_id']
-		// 									);	
-		// 						$list['world_places'][] = $row21;	
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	}	
-		// }
 /*
 	Get place based on region
 */
@@ -1292,15 +962,9 @@
 				if(!in_array($row22['location_id'],$location1['location'])){
 					$location1['location'][] = $row22['location_id'];
 
-					// sleep(2);
-					// $placeIdDetail->setPlaceId($row22['place_id']);
-					// $placeName = $placeIdDetail->getPlaceName();
-
 					$row22 = array(
 									'location_id' => $row22['location_id'],
 									'place_id' => $row22['place_id'],
-									// 'place_name' => $placeName,
-									// 'place_name' => $row22['place_name'],
 									'coordinates' => $row22['coordinates'],
 									'user_id' => $row22['user_id'],
 									'video_id' => $row22['video_id'],
@@ -1313,123 +977,6 @@
 				}
 			}
 		}
-		// else{ 
-
-		// 	$search23['select'] = "place_id, place_name, coordinates, location_id";
-		// 	$search23['table'] = "veeds_establishment";
-		// 	$search23['where'] = "location LIKE '%".$_POST['city']."%' AND place_id != ''";
-		// 	$search23['filters'] = "GROUP BY place_id LIMIT 1";
-
-		// 	// display place id if there is an existing data on the database regardless if there is no post associated
-		// 	if(jp_count($search23) > 0){	
-
-		// 		$result23 = jp_get($search23);
-		// 		while ($row23 = mysqli_fetch_assoc($result23)) {
-					
-		// 			if(!in_array($row23['location_id'],$location1['location'])){
-		// 				$location1['location'][] = $row23['location_id'];
-
-		// 				// sleep(2);
-		// 				// $placeIdDetail->setPlaceId($row23['place_id']);
-		// 				// $placeName = $placeIdDetail->getPlaceName();
-
-		// 				$row23 = array(
-		// 								'location_id' => $row23['location_id'],
-		// 								'place_id' => $row23['place_id'],
-		// 								// 'place_name' => $placeName,
-		// 								// 'place_name' => $row23['place_name'],
-		// 								'coordinates' => $row23['coordinates'],
-		// 								'user_id' => "",
-		// 								'video_id' => "",
-		// 								'video_thumb' => "",
-		// 								'date_upload' => "",
-		// 								'date_expiry' => "",
-		// 								'logged_id' => $_POST['user_id']
-		// 							);
-		// 				$list['world_places'][] = $row23;
-		// 			}
-		// 		}
-		// 	// get place id from google
-		// 	}else{
-				
-		// 		sleep(2);
-		// 		$nearbySearchCoordinatesCityObj1->setCoordinatesCity($_POST['coordinates'],$_POST['city']);
-		// 		$cityPlaceID = $nearbySearchCoordinatesCityObj1->getPlaceId();
-		// 		$cityPlaceName = $nearbySearchCoordinatesCityObj1->getPlaceName();
-		// 		$cityPlaceCoordinates = $nearbySearchCoordinatesCityObj1->getPlaceCoordinates();
-		// 		$cityPlaceAddress = $nearbySearchCoordinatesCityObj1->getPlaceAddress();
-				
-		// 		$search24['select'] = "location_id, place_id";
-		// 		$search24['table'] = "veeds_establishment";
-		// 		$search24['where'] = "place_id = '".$cityPlaceID."'";
-		// 		$search24['filters'] = "GROUP BY place_id LIMIT 1";
-		// 		// display place id if there is existing data on the database
-		// 		if(jp_count($search24) > 0){
-
-		// 			$result24 = jp_get($search24);
-		// 			while ($row24 = mysqli_fetch_assoc($result24)) {
-		// 				if(!in_array($row24['location_id'],$location1['location'])){
-		// 					$location1['location'][] = $row24['location_id'];
-
-		// 					$row24 = array(
-		// 									'location_id' => $row24['location_id'],
-		// 									'place_id' => $row24['place_id'],
-		// 									// 'place_name' => $cityPlaceName,
-		// 									'coordinates' => $cityPlaceCoordinates,
-		// 									'user_id' => "",
-		// 									'video_id' => "",
-		// 									'video_thumb' => "",
-		// 									'date_upload' => "",
-		// 									'date_expiry' => "",
-		// 									'logged_id' => $_POST['user_id']
-		// 								);
-		// 					$list['world_places'][] = $row24;
-		// 				}		
-		// 			}
-		// 		}else{
-
-		// 			if($cityPlaceID != ''){
-
-		// 				// $code = array('place_id' => $cityPlaceID);
-		// 				$code = array('place_id' => $cityPlaceID, 'coordinates' => $cityPlaceCoordinates, 'location' => $cityPlaceAddress);
-		// 				$data['data'] = $code;
-		// 				$data['table'] = "veeds_establishment";
-		// 				jp_add($data);
-
-		// 				// $newCityPlaceID = jp_last_added();
-
-		// 				$search25['select'] = "location_id, place_id";
-		// 				$search25['table'] = "veeds_establishment";
-		// 				$search25['where'] = "place_id = '".$cityPlaceID."'";
-		// 				$search25['filters'] = "GROUP BY place_id LIMIT 1";
-
-		// 				if(jp_count($search25) > 0){
-
-		// 					$result25 = jp_get($search25);
-		// 					while ($row25 = mysqli_fetch_assoc($result25)) {
-		// 						if(!in_array($row25['location_id'],$location1['location'])){
-		// 							$location1['location'][] = $row25['location_id'];
-
-		// 							$row25 = array(
-		// 										'location_id' => $row25['location_id'],
-		// 										'place_id' => $row25['place_id'],
-		// 										// 'place_name' => $cityPlaceName,
-		// 										'coordinates' => $cityPlaceCoordinates,
-		// 										'user_id' => "",
-		// 										'video_id' => "",
-		// 										'video_thumb' => "",
-		// 										'date_upload' => "",
-		// 										'date_expiry' => "",
-		// 										'logged_id' => $_POST['user_id']
-		// 									);	
-		// 							$list['world_places'][] = $row25;
-		// 						}	
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// }
 
 		foreach($result as $tags => $count) {
 			if($tags == "''"){
@@ -1472,15 +1019,10 @@
 
               			if(!in_array($row26['location_id'],$location1['location'])){
 							$location1['location'][] = $row26['location_id'];
-						
-							// $placeIdDetail->setPlaceId($row26['place_id']);
-							// $placeName = $placeIdDetail->getPlaceName();
 
 							$row26 = array(
 								'location_id' => $row26['location_id'],
 								'place_id' => $row26['place_id'],
-								// 'place_name' => $placeName,
-								// 'place_name' => $row26['place_name'],
 								'coordinates' => $row26['coordinates'],
 								'user_id' => $row26['user_id'],
 								'video_id' => $row26['video_id'],
@@ -1490,9 +1032,7 @@
 								'logged_id' => $_POST['user_id']
 							);
 
-	              			// if(!in_array($row26, $list['places'])){
-	              				$list['world_places'][] = $row26;
-	              			// }
+	              			$list['world_places'][] = $row26;
 						}	
               		}
               	}
@@ -1566,9 +1106,6 @@
 					 				if(!in_array($row29['location_id'],$location1['location'])){
 										$location1['location'][] = $row29['location_id'];
 
-										// $placeIdDetail->setPlaceId($row29['place_id']);
-										// $placeName = $placeIdDetail->getPlaceName();
-
 										$row29 = array(
 													'location_id' => $row29['location_id'],
 													'place_id' => $row29['place_id'],
@@ -1583,9 +1120,7 @@
 													'logged_id' => $_POST['user_id']
 												);
 
-						 				// if(!in_array($row29, $list['places'])){
-						 					$list['world_places'][] = $row29;
-						 				// }
+						 				$list['world_places'][] = $row29;
 									}
 					 			}
 					 		}
@@ -1640,14 +1175,9 @@
 					 				if(!in_array($row30['location_id'],$location1['location'])){
 										$location1['location'][] = $row30['location_id'];
 									
-										// $placeIdDetail->setPlaceId($row30['place_id']);
-										// $placeName = $placeIdDetail->getPlaceName();
-
 										$row30 = array(
 													'location_id' => $row30['location_id'],
 													'place_id' => $row30['place_id'],
-													// 'place_name' => $placeName,
-													// 'place_name' => $row30['place_name'],
 													'coordinates' => $row30['coordinates'],
 													'user_id' => $row30['user_id'],
 													'video_id' => $row30['video_id'],
@@ -1656,9 +1186,7 @@
 													'date_expiry' => $row30['date_expiry'],
 													'logged_id' => $_POST['user_id']
 												);
-						 				// if(!in_array($row30, $list['places'])){
-						 					$list['world_places'][] = $row30;
-						 				// }
+						 				$list['world_places'][] = $row30;
 									}
 					 			}
 					 		}
@@ -1732,9 +1260,6 @@
 
 			 				if(!in_array($row32['location_id'],$location1['location'])){
 								$location1['location'][] = $row32['location_id'];
-							
-								// $placeIdDetail->setPlaceId($row32['place_id']);
-								// $placeName = $placeIdDetail->getPlaceName();
 
 								$row32 = array(
 											'location_id' => $row32['location_id'],
@@ -1750,9 +1275,7 @@
 											'logged_id' => $_POST['user_id']
 										);
 
-				 				// if(!in_array($row32, $list['places'])){
-				 					$list['world_places'][] = $row32;
-				 				// }
+				 				$list['world_places'][] = $row32;
 							}
 			 			}
 			 		}
@@ -1794,15 +1317,10 @@
 
  				if(!in_array($row38['location_id'],$location1['location'])){
 					$location1['location'][] = $row38['location_id'];
-				
-					// $placeIdDetail->setPlaceId($row38['place_id']);
-					// $placeName = $placeIdDetail->getPlaceName();
 
 					$row38 = array(
 								'location_id' => $row38['location_id'],
 								'place_id' => $row38['place_id'],
-								// 'place_name' => $placeName,
-								// 'place_name' => $row38['place_name'],
 								'coordinates' => $row38['coordinates'],
 								'user_id' => $row38['user_id'],
 								'video_id' => $row38['video_id'],
@@ -1812,9 +1330,7 @@
 								'logged_id' => $_POST['user_id']
 							);
 
-	 				// if(!in_array($row38, $list['places'])){
-	 					$list['world_places'][] = $row38;
-	 				// }
+	 				$list['world_places'][] = $row38;
 				}
  			}
  		}
@@ -1877,7 +1393,7 @@
 
 				$result36 = jp_get($search36);
 				$row36 = mysqli_fetch_assoc($result36);
-				// $row33['logged_id'] = $_POST['user_id'];
+
 				$row33 = array(
 								'firstname' => $row33['firstname'],
 								'lastname' => $row33['lastname'],
