@@ -63,7 +63,7 @@
 
 					$data5['data'] = array(
 										'place_id' => $_GET['place_id'],
-										'place_name' => " ", 
+										'place_name' => $_GET['location'], 
 										// 'place_name' => $_GET['place_name'], 
 										'location' => $_GET['location'], 
 										'tags' => " ", 
