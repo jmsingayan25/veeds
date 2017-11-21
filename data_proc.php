@@ -705,18 +705,6 @@
 				$reply = array('reply' => false);
 
 		}elseif(isset($_POST['notif_toggle'])){
-			// $search['select'] = "notifications";
-			// $search['table'] = $data['table'];
-			// $search['where'] = "user_id = '".$_POST['user_id']."'";
-
-			// $result = jp_get($search);
-			// $row = mysqli_fetch_assoc($result);
-			// if($row['notifications'] == 0)
-			// 	$_POST['notifications'] = false;
-			// 	// $_POST['notifications'] = 0;
-			// else
-			// 	// $_POST['notifications'] = 1;
-			// 	$_POST['notifications'] = true;
 
 			if($_POST['notif_toggle'] == 0)
 				$_POST['notifications'] = false;
