@@ -753,8 +753,6 @@
 
 		// //	$vals = number of unique tags of establishment
 		// //	User has followed users and has visited 	less than 10 unique places
-		// // if($hashtags_implode == "''" && $users != "''" && $post_count['place_count'] < 10){
-		// // if($hashtags_implode == "''" && $users != "''" && $vals == "''"){
 		// if($users != "''" && $place_count['place_count'] < 10){
 
 		// 	$search37['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
@@ -816,7 +814,7 @@
 	 // 			}
 	 // 		}
 		// }
-		
+
 		if(!empty($location['location'])){
 			$location_ext = " AND e.location_id IN (".implode(",", $location['location']).")";
 		}else{
@@ -1278,8 +1276,6 @@
 								$row32 = array(
 											'location_id' => $row32['location_id'],
 											'place_id' => $row32['place_id'],
-											// 'place_name' => $placeName,
-											// 'place_name' => $row32['place_name'],
 											'coordinates' => $row32['coordinates'],
 											'user_id' => $row32['user_id'],
 											'video_id' => $row32['video_id'],
