@@ -2,7 +2,7 @@
 	
 	include("jp_library/jp_lib.php");
 
-	$_POST['user_id'] = "183";
+	$_POST['user_id'] = "283";
 	$_POST['place_id'] = "ChIJ4zLH-RjIlzMRDkshG9ZLDKc";
 	// $_POST['location'] = "Cambridge Cainta, Philippines";
 	
