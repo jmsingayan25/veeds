@@ -16,7 +16,7 @@
 		while($row = mysqli_fetch_assoc($result)){
 			// $array[] = $row['video_id'];
 
-			if(unlink('videos/'.$row['video_file']) && unlink('videos/'.$row['landscape_file']) && unlink('thumbnails/'.$row['video_thumb'])){
+			if((unlink('videos/'.$row['video_file']) && unlink('videos/'.$row['landscape_file']) && unlink('thumbnails/'.$row['video_thumb'])) || unlink('thumbnails/'.$row['video_thumb'])){
 				$reply = array('reply' => 1, 'message' => 'item deleted');
 			}
 
