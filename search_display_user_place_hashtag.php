@@ -38,13 +38,9 @@
 		$start = $_POST['count'] * 5;
 		$search['select'] = "DISTINCT user_id, firstname, lastname, username, personal_information, profile_pic";
 		$search['table'] = "veeds_users";
-		// $search['where'] = "user_id != '".$_POST['user_id']."'
-		// 					AND (firstname LIKE '%".$_POST['keyword']."%' 
-		// 					OR lastname LIKE '%".$_POST['keyword']."%'
-		// 					OR username LIKE '%".$_POST['keyword']."%')".$u_extend_names;
-		$search['where'] = "(firstname LIKE '%".$_POST['keyword']."%' 
-							OR lastname LIKE '%".$_POST['keyword']."%'
-							OR username LIKE '%".$_POST['keyword']."%')".$u_extend_names;
+		$search['where'] = "(LOWER(firstname) LIKE '%".strtolower($_POST['keyword'])."%' 
+							OR LOWER(lastname) LIKE '%".strtolower($_POST['keyword'])."%'
+							OR LOWER(username) LIKE '%".strtolower($_POST['keyword'])."%')".$u_extend_names;
 		$search['filters'] = "LIMIT ".$start.", 5";
 
 		if(jp_count($search) > 0){
@@ -90,13 +86,6 @@
 		$start = $_POST['count'] * 5;
 		$search1['select'] = "DISTINCT u.user_id, u.firstname, u.lastname, u.username, u.personal_information, u.profile_pic";
 		$search1['table'] = "veeds_users u, veeds_users_visit_history h, veeds_establishment e";
-		// $search1['where'] = "u.user_id = h.user_id
-		// 						AND e.place_id = h.place_id
-		// 						AND u.user_id != '".$_POST['user_id']."'
-		// 						AND (LOWER(h.hashtags) LIKE '%".strtolower($_POST['keyword'])."%'
-		// 						OR LOWER(e.place_name) LIKE '%".strtolower($_POST['keyword'])."%'
-		// 						OR LOWER(h.hashtags) SOUNDS LIKE '%".strtolower($_POST['keyword'])."%'
-		// 						OR LOWER(e.place_name) SOUNDS LIKE '%".strtolower($_POST['keyword'])."%')".$u_extend_place;
 		$search1['where'] = "u.user_id = h.user_id
 								AND e.place_id = h.place_id
 								AND (LOWER(h.hashtags) LIKE '%".strtolower($_POST['keyword'])."%'
