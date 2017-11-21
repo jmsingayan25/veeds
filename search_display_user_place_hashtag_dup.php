@@ -46,11 +46,11 @@
 		// 					AND (firstname LIKE '%".$_POST['keyword']."%' 
 		// 					OR lastname LIKE '%".$_POST['keyword']."%'
 		// 					OR username LIKE '%".$_POST['keyword']."%')".$u_extend_names;
-		$search['where'] = "(firstname LIKE '%".$_POST['keyword']."%' 
-							OR lastname LIKE '%".$_POST['keyword']."%'
-							OR username LIKE '%".$_POST['keyword']."%')".$u_extend_names;
+		$search['where'] = "(LOWER(firstname) LIKE '%".strtolower($_POST['keyword'])."%' 
+							OR LOWER(lastname) LIKE '%".strtolower($_POST['keyword'])."%'
+							OR LOWER(username) LIKE '%".strtolower($_POST['keyword'])."%')".$u_extend_names;
 		$search['filters'] = "LIMIT ".$start.", 5";
-
+		echo implode(" ", $search);
 		if(jp_count($search) > 0){
 			$result = jp_get($search);
 			while ($row = mysqli_fetch_assoc($result)) {
