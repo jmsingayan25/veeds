@@ -2,8 +2,8 @@
 	
 	include("jp_library/jp_lib.php");
 
-	$_POST['user_id'] = "283";
-	$_POST['place_id'] = "ChIJ4zLH-RjIlzMRDkshG9ZLDKc";
+	$_POST['user_id'] = "271";
+	$_POST['place_id'] = "ChIJcSahHSa4lzMRtmL27Wx5P_U";
 	// $_POST['location'] = "Cambridge Cainta, Philippines";
 	
 	if(isset($_POST['place_id'])){
@@ -29,10 +29,19 @@
 		}
 
 		// Get users followed by the user. User excluded if in the blocked list
+		// $search['select'] = "DISTINCT user_id_follow";
+		// $search['table'] = "veeds_users_follow";
+  //   	$search['where'] = "user_id = ".$_POST['user_id']." AND user_id_follow != '".$_POST['user_id']."' AND approved = 1".$u_extend;
+
 		$search['select'] = "DISTINCT user_id_follow";
 		$search['table'] = "veeds_users_follow";
-    	$search['where'] = "user_id = ".$_POST['user_id']." AND user_id_follow != '".$_POST['user_id']."' AND approved = 1".$u_extend;
-
+    	$search['where'] = "user_id_follow NOT IN (SELECT DISTINCT user_id_follow 
+    												FROM veeds_users_follow 
+    												WHERE user_id = '".$_POST['user_id']."' 
+    												AND user_id_follow != '".$_POST['user_id']."'
+    												AND approved = 1)".$u_extend;
+    	$search['filters'] = "ORDER BY user_id_follow ASC";
+    	// echo implode(" ", $search);
 		if(jp_count($search) > 0){
 			$result = jp_get($search);
 			while($row = mysqli_fetch_assoc($result)){
@@ -44,13 +53,13 @@
 
 		// Display user info
 		$users = implode(",", $array['users_follow']);
-		$search2['select'] = "DISTINCT u.user_id, u.firstname, u.lastname, u.email, u.bday, u.gender, u.username, u.profile_pic, u.cover_photo, u.country, u.private";
+		$search2['select'] = "DISTINCT h.place_id, u.user_id, u.firstname, u.lastname, u.email, u.bday, u.gender, u.username, u.profile_pic, u.cover_photo, u.country, u.private";
 		$search2['table'] = "veeds_users u, veeds_users_visit_history h";
 		$search2['where'] = "h.user_id = u.user_id 
 								AND h.user_id IN (".$users.")
 								AND h.place_id = '".$_POST['place_id']."'";
 		$search2['filters'] = "GROUP BY h.user_id";
-		
+		// echo implode(" ", $search2);
 		$result2 = jp_get($search2);
 		while($row2 = mysqli_fetch_assoc($result2)){
 

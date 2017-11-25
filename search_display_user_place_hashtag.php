@@ -36,7 +36,7 @@
 		}
 
 		$start = $_POST['count'] * 5;
-		$search['select'] = "DISTINCT user_id, firstname, lastname, username, personal_information, profile_pic";
+		$search['select'] = "DISTINCT user_id, firstname, lastname, username, personal_information, profile_pic, private";
 		$search['table'] = "veeds_users";
 		$search['where'] = "(LOWER(firstname) LIKE '%".strtolower($_POST['keyword'])."%' 
 							OR LOWER(lastname) LIKE '%".strtolower($_POST['keyword'])."%'
@@ -74,6 +74,12 @@
 					$row['blocked'] = false;
 				}
 
+				if($row['private'] == 0){
+					$row['private'] = false;
+				}else{
+					$row['private'] = true;
+				}
+
 				$row['category'] = "Users"; // new line
 				$row['logged_id'] = $_POST['user_id'];
 
@@ -84,7 +90,7 @@
 		}
 
 		$start = $_POST['count'] * 5;
-		$search1['select'] = "DISTINCT u.user_id, u.firstname, u.lastname, u.username, u.personal_information, u.profile_pic";
+		$search1['select'] = "DISTINCT u.user_id, u.firstname, u.lastname, u.username, u.personal_information, u.profile_pic, private";
 		$search1['table'] = "veeds_users u, veeds_users_visit_history h, veeds_establishment e";
 		$search1['where'] = "u.user_id = h.user_id
 								AND e.place_id = h.place_id
@@ -123,6 +129,12 @@
 					$row['blocked'] = true;
 				}else{
 					$row['blocked'] = false;
+				}
+
+				if($row['private'] == 0){
+					$row['private'] = false;
+				}else{
+					$row['private'] = true;
 				}
 
 				$row['category'] = "Users"; // new line

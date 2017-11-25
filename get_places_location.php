@@ -24,11 +24,20 @@
 		}
 
 		// Get users followed by the user. User excluded if in the blocked list
+		// $search['select'] = "DISTINCT user_id_follow";
+		// $search['table'] = "veeds_users_follow";
+  //   	$search['where'] = "user_id = ".$_POST['user_id']." 
+  //   						AND user_id_follow != '".$_POST['user_id']."' 
+  //   						AND approved = 1".$u_extend;
+
 		$search['select'] = "DISTINCT user_id_follow";
 		$search['table'] = "veeds_users_follow";
-    	$search['where'] = "user_id = ".$_POST['user_id']." 
-    						AND user_id_follow != '".$_POST['user_id']."' 
-    						AND approved = 1".$u_extend;
+    	$search['where'] = "user_id_follow NOT IN (SELECT DISTINCT user_id_follow 
+    												FROM veeds_users_follow 
+    												WHERE user_id = '".$_POST['user_id']."' 
+    												AND user_id_follow != '".$_POST['user_id']."'
+    												AND approved = 1)".$u_extend;
+    	$search['filters'] = "ORDER BY user_id_follow ASC";
 
 		if(jp_count($search) > 0){
 			$result = jp_get($search);
@@ -41,7 +50,7 @@
 
 		// Display user info
 		$users = implode(",", $array['users_follow']);
-		$search2['select'] = "DISTINCT u.user_id, u.firstname, u.lastname, u.email, u.bday, u.gender, u.username, u.profile_pic, u.cover_photo, u.country, u.private";
+		$search2['select'] = "DISTINCT h.place_id, u.user_id, u.firstname, u.lastname, u.email, u.bday, u.gender, u.username, u.profile_pic, u.cover_photo, u.country, u.private";
 		$search2['table'] = "veeds_users u, veeds_users_visit_history h";
 		$search2['where'] = "h.user_id = u.user_id 
 								AND h.user_id IN (".$users.")

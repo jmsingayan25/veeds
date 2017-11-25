@@ -761,9 +761,10 @@
 
 				// if(crypt($_POST['old_password'], $row['password']) == $row['password']){
 				if(crypt('st',$_POST['old_password']) == $row['password']){
+					
 					$_POST['password'] = crypt('st',$_POST['password']);
 					$search['data'] = $_POST;
-
+					$search['table'] = $data['table'];
 
 					if(jp_update($search))
 						$reply = array('reply' => 'Password updated');

@@ -6,8 +6,8 @@
 	if(empty($_POST['count']) || !isset($_POST['count'])){
 		$_POST['count'] = 0;
 	}
-	$_POST['user_id'] = "49";
-	$_POST['logged_id'] = "283";
+	$_POST['user_id'] = "271";
+	$_POST['logged_id'] = "271";
 	$_POST['coordinates'] = "14.5910630605843,121.12628397653";
 	$_POST['city'] = "Cainta";
 	if(isset($_POST['user_id'])){
@@ -297,18 +297,19 @@
 			$array['users_follow'][] = "''";
 		}
 
-		$search['table'] = "veeds_users_follow";
+		$search39['select'] = "DISTINCT user_id_follow";
+		$search39['table'] = "veeds_users_follow";
 		// $search['where'] = "user_id_follow != '".$_POST['user_id']."'".$u_extend;
-		$search['where'] = "user_id_follow != '".$_POST['user_id']."' 
-    						AND user_id_follow NOT IN (SELECT DISTINCT user_id_follow 
+		$search39['where'] = "user_id_follow != '".$_POST['user_id']."' 
+    						  AND user_id_follow NOT IN (SELECT DISTINCT user_id_follow 
 	    												FROM veeds_users_follow 
 	    												WHERE user_id = '".$_POST['user_id']."' 
 	    												AND user_id_follow != '".$_POST['user_id']."'
 	    												AND approved = 1)".$u_extend;
-		$search['filters'] = "ORDER BY user_id_follow ASC";
-		// echo implode(" ", $search)."<br>";
-		if(jp_count($search) > 0){
-			$result1 = jp_get($search);
+		$search39['filters'] = "ORDER BY user_id_follow ASC";
+		echo implode(" ", $search39)."<br>";
+		if(jp_count($search39) > 0){
+			$result1 = jp_get($search39);
 			while($row = mysqli_fetch_assoc($result1)){
 				$array['users_not_follow'][] = $row['user_id_follow'];
 			}
@@ -1022,7 +1023,7 @@
 	  													WHERE user_id IN (".$users.")
 	 													GROUP BY place_id)";
 			$search37['filters'] = "GROUP BY h.place_id ORDER BY COUNT(DISTINCT h.user_id) DESC";
-			echo implode(" ", $search37)."<br>";
+			// echo implode(" ", $search37)."<br>";
 			if(jp_count($search37) > 0){
 
 	 			$result37 = jp_get($search37);
@@ -1859,7 +1860,7 @@
 													WHERE user_id IN (".$users_not_follow.")
 													GROUP BY place_id)";
 		$search38['filters'] = "GROUP BY h.place_id ORDER BY COUNT(DISTINCT h.user_id) DESC";
-		echo implode(" ", $search38)."<br>";
+		// echo implode(" ", $search38)."<br>";
 		if(jp_count($search38) > 0){
 
  			$result38 = jp_get($search38);

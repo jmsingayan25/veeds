@@ -297,18 +297,19 @@
 			$array['users_follow'][] = "''";
 		}
 
-		$search['table'] = "veeds_users_follow";
-		// $search['where'] = "user_id_follow != '".$_POST['user_id']."'".$u_extend;
-		$search['where'] = "user_id_follow != '".$_POST['user_id']."' 
+		$search39['select'] = "DISTINCT user_id_follow";
+		$search39['table'] = "veeds_users_follow";
+		// $search39['where'] = "user_id_follow != '".$_POST['user_id']."'".$u_extend;
+		$search39['where'] = "user_id_follow != '".$_POST['user_id']."' 
     						AND user_id_follow NOT IN (SELECT DISTINCT user_id_follow 
 	    												FROM veeds_users_follow 
 	    												WHERE user_id = '".$_POST['user_id']."' 
 	    												AND user_id_follow != '".$_POST['user_id']."'
 	    												AND approved = 1)".$u_extend;
-		$search['filters'] = "ORDER BY user_id_follow ASC";
-		// echo implode(" ", $search)."<br>";
-		if(jp_count($search) > 0){
-			$result1 = jp_get($search);
+		$search39['filters'] = "ORDER BY user_id_follow ASC";
+		// echo implode(" ", $search39)."<br>";
+		if(jp_count($search39) > 0){
+			$result1 = jp_get($search39);
 			while($row = mysqli_fetch_assoc($result1)){
 				$array['users_not_follow'][] = $row['user_id_follow'];
 			}
