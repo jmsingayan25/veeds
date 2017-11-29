@@ -10,7 +10,7 @@
 		if (jp_count($search) > 0) {
 			$result = jp_get($search);
 			while ($row = mysqli_fetch_assoc($result)) {
-				$search2['select'] = "user_id, username";
+				$search2['select'] = "user_id, username, profile_pic";
 				$search2['table'] = "veeds_users";
 				$search2['where'] = "user_id = '".$row['user_id_block']."'";
 				if (jp_count($search2) > 0) {
