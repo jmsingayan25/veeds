@@ -6,12 +6,36 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "183";
+	$_POST['user_id'] = "271";
 	$_POST['keyword'] = "#rain";
 	// $_POST['category'] = "Hashtags";
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 
-		$list = array();
+		$list = array();	
+		$u_blocks = array();
+
+		$block['select'] = "user_id_block";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row3 = mysqli_fetch_assoc($result_block)){
+			$u_blocks[] = $row3['user_id_block'];
+		}
+
+		$block['select'] = "user_id";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id_block = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row3 = mysqli_fetch_assoc($result_block)){
+			if(!in_array($row3, $u_blocks))
+				$u_blocks[] = $row3['user_id'];
+		}
+
+		if(count($u_blocks) > 0){
+			$u_extend_names = " AND v.user_id NOT IN (".implode(",", $u_blocks).")";
+		}else{
+			$u_extend_names = "";
+		}
 
 		// $search['select'] = "DISTINCT video_id, video_name, description, video_file, video_thumb, date_upload, date_expiry, view_count, like_count, location, video_length, landscape_file, user_id, place_id";
 		// $search['table'] = "veeds_videos";
@@ -86,11 +110,11 @@
 		$search['select'] = "DISTINCT video_id, video_name, description, v.video_file, video_thumb, date_upload, date_expiry, view_count, like_count, location, video_length, landscape_file, v.user_id, place_id, firstname, lastname, username, personal_information, profile_pic";
 		$search['table'] = "veeds_videos v, veeds_users u";
 		$search['where'] = "v.user_id = u.user_id
-							AND description LIKE '%".$_POST['keyword']."%'";
+							AND description LIKE '%".$_POST['keyword']."%'".$u_extend_names;
 		// $search['where'] = "v.user_id = u.user_id
 		// 					AND description LIKE '%".$_POST['keyword']."%' 
 		// 					AND DATE_FORMAT(date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
-		// echo implode(" ", $search);
+		echo implode(" ", $search);
 		if(jp_count($search) > 0){
 
 			$result = jp_get($search);

@@ -8,12 +8,36 @@
 
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 
-		$list = array();
+		$list = array();	
+		$u_blocks = array();
+
+		$block['select'] = "user_id_block";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row3 = mysqli_fetch_assoc($result_block)){
+			$u_blocks[] = $row3['user_id_block'];
+		}
+
+		$block['select'] = "user_id";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id_block = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row3 = mysqli_fetch_assoc($result_block)){
+			if(!in_array($row3, $u_blocks))
+				$u_blocks[] = $row3['user_id'];
+		}
+
+		if(count($u_blocks) > 0){
+			$u_extend_names = " AND v.user_id NOT IN (".implode(",", $u_blocks).")";
+		}else{
+			$u_extend_names = "";
+		}
 
 		$search['select'] = "DISTINCT video_id, video_name, description, v.video_file, video_thumb, date_upload, date_expiry, view_count, like_count, location, video_length, landscape_file, v.user_id, place_id, firstname, lastname, username, personal_information, profile_pic";
 		$search['table'] = "veeds_videos v, veeds_users u";
 		$search['where'] = "v.user_id = u.user_id
-							AND description LIKE '%".$_POST['keyword']."%'";
+							AND description LIKE '%".$_POST['keyword']."%'".$u_extend_names;
 		// $search['where'] = "v.user_id = u.user_id
 		// 					AND description LIKE '%".$_POST['keyword']."%' 
 		// 					AND DATE_FORMAT(date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";

@@ -10,6 +10,30 @@
 
 		$list = array();
 		$list_of_countries = array();
+		$u_blocks = array();
+
+		$block['select'] = "user_id_block";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row3 = mysqli_fetch_assoc($result_block)){
+			$u_blocks[] = $row3['user_id_block'];
+		}
+
+		$block['select'] = "user_id";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id_block = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row3 = mysqli_fetch_assoc($result_block)){
+			if(!in_array($row3, $u_blocks))
+				$u_blocks[] = $row3['user_id'];
+		}
+
+		if(count($u_blocks) > 0){
+			$u_extend_names = " AND v.user_id NOT IN (".implode(",", $u_blocks).")";
+		}else{
+			$u_extend_names = "";
+		}
 
 		// $hostname = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=".str_replace(" ", "+", $_POST['keyword'])."&sensor=false&types=(regions)&key=AIzaSyCWURxddYHkkejBOFqA31s3yiRXr2BzEWM";
 	
@@ -245,7 +269,7 @@
 			$search['where'] = "v.place_id = e.place_id 
 								AND v.user_id = u.user_id
 								AND (v.location LIKE '%".$explode_city[$i]."%'
-								OR e.place_name LIKE '%".$explode_city[$i]."%')";
+								OR e.place_name LIKE '%".$explode_city[$i]."%')".$u_extend_names;
 			$search['filters'] = "GROUP BY location_id ORDER BY date_upload DESC";
 			// echo implode(" ", $search);
 			if(jp_count($search) > 0){

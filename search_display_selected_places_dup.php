@@ -9,13 +9,37 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "183";
+	$_POST['user_id'] = "271";
 	$_POST['keyword'] = "Dona Imelda, Quezon City, Metro Manila, Philippines";
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 
 		// $placeIdDetail = new classPlaceID;
 
-		$list = array();
+		$list = array();	
+		$u_blocks = array();
+
+		$block['select'] = "user_id_block";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row3 = mysqli_fetch_assoc($result_block)){
+			$u_blocks[] = $row3['user_id_block'];
+		}
+
+		$block['select'] = "user_id";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id_block = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row3 = mysqli_fetch_assoc($result_block)){
+			if(!in_array($row3, $u_blocks))
+				$u_blocks[] = $row3['user_id'];
+		}
+
+		if(count($u_blocks) > 0){
+			$u_extend_names = " AND v.user_id NOT IN (".implode(",", $u_blocks).")";
+		}else{
+			$u_extend_names = "";
+		}
 
 		// $search['select'] = "user_id_search";
 		// $search['table'] = "veeds_users_history";
@@ -234,7 +258,7 @@
 			$search['where'] = "v.place_id = e.place_id 
 								AND v.user_id = u.user_id
 								AND (v.location LIKE '%".$explode_city[$i]."%'
-								OR e.place_name LIKE '%".$explode_city[$i]."%')";
+								OR e.place_name LIKE '%".$explode_city[$i]."%')".$u_extend_names;
 			$search['filters'] = "GROUP BY location_id ORDER BY date_upload DESC";
 			// echo implode(" ", $search);
 			if(jp_count($search) > 0){

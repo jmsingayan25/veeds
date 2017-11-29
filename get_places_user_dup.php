@@ -2,7 +2,7 @@
 	
 	include("jp_library/jp_lib.php");
 
-	$_POST['user_id'] = "183";
+	$_POST['user_id'] = "271";
 	$_POST['place_id'] = "ChIJS4PaboC4lzMRNjesQNda8jA";
 	// $_POST['location'] = "Cambridge Cainta, Philippines";
 	if(isset($_POST['place_id'])){
@@ -12,13 +12,22 @@
 		$list = array();
 		$u_blocks = array();
 
+		$block['select'] = "DISTINCT user_id_block";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row = mysqli_fetch_assoc($result_block)){
+			$u_blocks[] = $row['user_id_block'];
+		}
+
 		// Get users blocked by the user
 		$block['select'] = "DISTINCT user_id";
 		$block['table'] = "veeds_users_block";
 		$block['where'] = "user_id_block = ".$_POST['user_id'];
 		$result_block = jp_get($block);
 		while($row = mysqli_fetch_assoc($result_block)){
-			$u_blocks[] = $row['user_id'];
+			if(!in_array($row, $u_blocks))
+				$u_blocks[] = $row['user_id'];
 		}
 
 		if(count($u_blocks) > 0){
@@ -31,7 +40,7 @@
 		$search['select'] = "DISTINCT user_id_follow";
 		$search['table'] = "veeds_users_follow";
     	$search['where'] = "user_id = ".$_POST['user_id']." AND user_id_follow != '".$_POST['user_id']."' AND approved = 1".$u_extend;
-
+    	echo implode(" ", $search);
 		if(jp_count($search) > 0){
 			$result = jp_get($search);
 			while($row = mysqli_fetch_assoc($result)){
@@ -49,7 +58,7 @@
 								AND h.user_id IN (".$users.")
 								AND h.place_id = '".$_POST['place_id']."'";
 		$search2['filters'] = "GROUP BY h.user_id";
-		
+		echo implode(" ", $search2);
 		$result2 = jp_get($search2);
 		while($row2 = mysqli_fetch_assoc($result2)){
 
