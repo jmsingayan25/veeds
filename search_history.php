@@ -46,13 +46,13 @@
 
 								$search3['select'] = "user_id";
 								$search3['table'] = "veeds_users_follow";
-								$search3['where'] = "user_id = '".$_POST['user_id']."' AND user_id_follow = '".$row1['user_id']."' AND approved = 1";
+								$search3['where'] = "user_id = '".$_POST['user_id']."' AND user_id_follow = '".$row2['user_id']."' AND approved = 1";
 
 								$count3 = jp_count($search3);
 								if($count3 > 0){
 									$row1['followed'] = 1;
 								}else{
-									$search3['where'] = "user_id = '".$_POST['user_id']."' AND user_id_follow = '".$row1['user_id']."' AND approved = 0";
+									$search3['where'] = "user_id = '".$_POST['user_id']."' AND user_id_follow = '".$row2['user_id']."' AND approved = 0";
 									$count4 = jp_count($search3);
 									if($count4 > 0)
 										$row1['followed'] = 2;
@@ -62,7 +62,7 @@
 
 								$search4['select'] = "user_id";
 								$search4['table'] = "veeds_users_block";
-								$search4['where'] = "user_id = '".$_POST['user_id']."' AND user_id_block = '".$row1['user_id']."'";
+								$search4['where'] = "user_id = '".$_POST['user_id']."' AND user_id_block = '".$row2['user_id']."'";
 
 								$count5 = (int)jp_count($search4);
 								if($count5 > 0){

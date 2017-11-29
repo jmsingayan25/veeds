@@ -29,7 +29,7 @@
 		$list['private'] = $row2['private'];
 		$list['user_id'] = $row2['user_id'];
 		$list['logged_id'] = $_POST['logged_id'];
-		$list['total_likes'] = $row2['total_Likes'];
+		$list['total_likes'] = (int)$row2['total_Likes'];
 		$list['cover_photo'] = $row2['cover_photo'];
 		$list['video_file'] = $row2['video_file'];
 		$list['post'] = (int)$row2['post'];
@@ -251,7 +251,7 @@
 		$list['profile_pic'] = $row2['profile_pic'];
 		$list['private'] = $row2['private'];
 		$list['user_id'] = $row2['user_id'];
-		$list['total_likes'] = $row2['total_Likes'];
+		$list['total_likes'] = (int)$row2['total_Likes'];
  		$search2['select'] = "user_id";
 		$search2['table'] = "veeds_users_follow";
 		$search2['where'] = "user_id = '".$_POST['logged_id']."' AND approved = 1 AND user_id_follow = '".$row2['user_id']."' "; 

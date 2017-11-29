@@ -27,6 +27,21 @@
 			// 		}
 			// }
 			
+			$search1['select'] = "total_Likes";
+			$search1['table'] = "veeds_users";
+			$search1['where'] = "user_id = '".$_POST['user_id']."'";
+
+			$result1 = jp_get($search1);
+			$row1 = mysqli_fetch_assoc($result1);
+
+			$like_count = array();
+			$like_count['total_Likes'] = $row1['total_Likes'] - 1;
+
+			$data1['data'] = $like_count;
+			$data1['table'] = "veeds_users";
+			$data1['where'] = "user_id = '".$_POST['user_id']."'";
+			jp_update($data1);
+
 			$search['select'] = "video_id";
 			$search['table'] = "veeds_videos_likes";
 			$search['where'] = "video_id = ".$_POST['video_id'];
@@ -139,6 +154,21 @@
 			// 		}
 			// }
 			
+			$search1['select'] = "total_Likes";
+			$search1['table'] = "veeds_users";
+			$search1['where'] = "user_id = '".$_POST['user_id']."'";
+
+			$result1 = jp_get($search1);
+			$row1 = mysqli_fetch_assoc($result1);
+
+			$like_count = array();
+			$like_count['total_Likes'] = $row1['total_Likes'] + 1;
+
+			$data1['data'] = $like_count;
+			$data1['table'] = "veeds_users";
+			$data1['where'] = "user_id = '".$video_row['user_id']."'";
+			jp_update($data1);
+
 			$data['data'] = $_POST;
 			jp_add($data);
 			$search['select'] = "video_id";

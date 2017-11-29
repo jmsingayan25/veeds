@@ -3,7 +3,7 @@
 	include("GCM.php");
 	
 	$_POST['video_id'] = "38";
-	$_POST['user_id_liker'] = "98";
+	$_POST['user_id_liker'] = "271";
 	$_POST['user_id'] = "49";
 	$_POST['table'] = "veeds_videos";
 
@@ -44,13 +44,28 @@
 				// 		}
 				// }
 				
+				$search1['select'] = "total_Likes";
+				$search1['table'] = "veeds_users";
+				$search1['where'] = "user_id = '".$_POST['user_id']."'";
+
+				$result1 = jp_get($search1);
+				$row1 = mysqli_fetch_assoc($result1);
+
+				$like_count = array();
+				$like_count['total_Likes'] = $row1['total_Likes'] - 1;
+
+				$data1['data'] = $like_count;
+				$data1['table'] = "veeds_users";
+				$data1['where'] = "user_id = '".$_POST['user_id']."'";
+				jp_update($data1);
+
 				$search['select'] = "video_id";
 				$search['table'] = "veeds_videos_likes";
 				$search['where'] = "video_id = ".$_POST['video_id'];
 
 				$count = jp_count($search);
 
-				$result = array('like' => 0, 'post' => $_POST, "like_count" => $count);
+				$result = array('like' => 0, 'post' => $_POST, "like_count" => $count, 'data1' => $data1);
 				echo json_encode($result);
 			} else {
 				//retrieve video info
@@ -155,6 +170,21 @@
 				// 			$updateValue = false;
 				// 		}
 				// }
+
+				$search['select'] = "total_Likes";
+				$search['table'] = "veeds_users";
+				$search['where'] = "user_id = '".$_POST['user_id']."'";
+
+				$result = jp_get($search);
+				$row = mysqli_fetch_assoc($result);
+
+				$like_count = array();
+				$like_count['total_Likes'] = $row['total_Likes'] + 1;
+
+				$data1['data'] = $like_count;
+				$data1['table'] = "veeds_users";
+				$data1['where'] = "user_id = '".$video_row['user_id']."'";
+				jp_update($data1);
 				
 				$data['data'] = $_POST;
 				jp_add($data);
@@ -164,7 +194,7 @@
 
 				$count = jp_count($search);
 				
-				$result = array('like' => 1, 'like_count' => $count, 'didSend' => $didSendNotif, 'data' => $data, 'count' => $count);
+				$result = array('like' => 1, 'like_count' => $count, 'didSend' => $didSendNotif, 'data' => $data, 'count' => $count, 'data1' => $data1);
 				echo json_encode($result);
 			}
 		}		
