@@ -10,7 +10,7 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "183";
+	$_POST['user_id'] = "271";
 	if(isset($_POST['user_id'])){
    		
 		$list = array();
@@ -23,7 +23,32 @@
 		while ($row = mysqli_fetch_assoc($result)) {
 			
 			if($row['category'] == "Users"){
-				
+
+				$u_blocks = array();
+
+				$block['select'] = "user_id_block";
+				$block['table'] = "veeds_users_block";
+				$block['where'] = "user_id = ".$_POST['user_id'];
+				$result_block = jp_get($block);
+				while($row3 = mysqli_fetch_assoc($result_block)){
+					$u_blocks[] = $row3['user_id_block'];
+				}
+
+				$block['select'] = "user_id";
+				$block['table'] = "veeds_users_block";
+				$block['where'] = "user_id_block = ".$_POST['user_id'];
+				$result_block = jp_get($block);
+				while($row3 = mysqli_fetch_assoc($result_block)){
+					if(!in_array($row3, $u_blocks))
+						$u_blocks[] = $row3['user_id'];
+				}
+
+				if(count($u_blocks) > 0){
+					$u_extend_names = " AND user_id NOT IN (".implode(",", $u_blocks).")";
+				}else{
+					$u_extend_names = "";
+				}
+
 				$start = $_POST['count'] * 10;
 				$search1['select'] = "user_id, user_id_search, category, search_date";
 				$search1['table'] = "veeds_users_history";

@@ -4,11 +4,8 @@
 
 	$_POST['user_id'] = "271";
 	$_POST['place_id'] = "ChIJcSahHSa4lzMRtmL27Wx5P_U";
-	// $_POST['location'] = "Cambridge Cainta, Philippines";
-	
 	if(isset($_POST['place_id'])){
 
-		// $location = str_replace("'","\'",$_POST['location']);
 		$array = array();
 		$list = array();
 		$u_blocks = array();
@@ -40,7 +37,9 @@
 		// Get users followed by the user. User excluded if in the blocked list
 		// $search['select'] = "DISTINCT user_id_follow";
 		// $search['table'] = "veeds_users_follow";
-  //   	$search['where'] = "user_id = ".$_POST['user_id']." AND user_id_follow != '".$_POST['user_id']."' AND approved = 1".$u_extend;
+  //   	$search['where'] = "user_id = ".$_POST['user_id']." 
+  //   						AND user_id_follow != '".$_POST['user_id']."' 
+  //   						AND approved = 1".$u_extend;
 
 		$search['select'] = "DISTINCT user_id_follow";
 		$search['table'] = "veeds_users_follow";
@@ -50,7 +49,7 @@
     												AND user_id_follow != '".$_POST['user_id']."'
     												AND approved = 1)".$u_extend;
     	$search['filters'] = "ORDER BY user_id_follow ASC";
-    	echo implode(" ", $search);
+
 		if(jp_count($search) > 0){
 			$result = jp_get($search);
 			while($row = mysqli_fetch_assoc($result)){
@@ -66,9 +65,10 @@
 		$search2['table'] = "veeds_users u, veeds_users_visit_history h";
 		$search2['where'] = "h.user_id = u.user_id 
 								AND h.user_id IN (".$users.")
-								AND h.place_id = '".$_POST['place_id']."'";
+								AND h.place_id = '".$_POST['place_id']."'
+								AND u.disabled = 0";
 		$search2['filters'] = "GROUP BY h.user_id";
-		// echo implode(" ", $search2);
+		
 		$result2 = jp_get($search2);
 		while($row2 = mysqli_fetch_assoc($result2)){
 
@@ -110,7 +110,7 @@
 		$search3['select'] = " h.place_id, e.place_name, e.location, e.coordinates, v.video_id, v.video_name, v.description, v.video_file, v.video_thumb, v.date_upload, v.view_count, v.like_count, v.video_length, v.landscape_file, v.user_id";
 		$search3['table'] = "veeds_users u, veeds_videos v, veeds_establishment e, veeds_users_visit_history h";
 		// $search3['where'] = "h.user_id = u.user_id
-		// 						AND h.place_id = v.place_id
+		// 						AND h.video_id = v.video_id
 		// 						AND h.place_id = e.place_id
 		// 						AND h.user_id IN (".$users.")
 		// 						AND h.place_id = '".$_POST['place_id']."'

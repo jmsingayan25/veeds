@@ -25,7 +25,7 @@
 		// 	$filename2 = jp_upload($_FILES['thumb'],$filename2,"videos");
 		// }
 		// if(!empty($filename) && !empty($filename2)){
-		if(!empty($filename) && !empty($filename2)){
+		if(!empty($filename)){
 
 			$_GET['coordinates'] = "14.5841636,121.0571627";
 

@@ -3,7 +3,7 @@
 	include("jp_library/jp_lib.php");
 
 	$_POST['user_id'] = "271";
-	$_POST['place_id'] = "ChIJS4PaboC4lzMRNjesQNda8jA";
+	$_POST['place_id'] = "7Q63H4RG CFHX";
 	// $_POST['location'] = "Cambridge Cainta, Philippines";
 	if(isset($_POST['place_id'])){
 
@@ -40,7 +40,7 @@
 		$search['select'] = "DISTINCT user_id_follow";
 		$search['table'] = "veeds_users_follow";
     	$search['where'] = "user_id = ".$_POST['user_id']." AND user_id_follow != '".$_POST['user_id']."' AND approved = 1".$u_extend;
-    	echo implode(" ", $search);
+    	// echo implode(" ", $search);
 		if(jp_count($search) > 0){
 			$result = jp_get($search);
 			while($row = mysqli_fetch_assoc($result)){
@@ -58,7 +58,7 @@
 								AND h.user_id IN (".$users.")
 								AND h.place_id = '".$_POST['place_id']."'";
 		$search2['filters'] = "GROUP BY h.user_id";
-		echo implode(" ", $search2);
+		// echo implode(" ", $search2);
 		$result2 = jp_get($search2);
 		while($row2 = mysqli_fetch_assoc($result2)){
 

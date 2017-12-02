@@ -5,16 +5,42 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "183";
+	$_POST['user_id'] = "49";
 	if(isset($_POST['user_id'])){
 		
+		$u_blocks = array();
+
+		$block['select'] = "DISTINCT user_id_block";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row = mysqli_fetch_assoc($result_block)){
+			$u_blocks[] = $row['user_id_block'];
+		}
+
+		// Get users blocked by the user
+		$block['select'] = "DISTINCT user_id";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id_block = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row = mysqli_fetch_assoc($result_block)){
+			if(!in_array($row, $u_blocks))
+				$u_blocks[] = $row['user_id'];
+		}
+
+		if(count($u_blocks) > 0){
+			$u_extend = " AND a.activity_user NOT IN (".implode(",", $u_blocks).")";
+		}else{
+			$u_extend = "";
+		}
+
 		$search['select'] = "a.type, a.notif_datetime, b.username, b.firstname, b.lastname, b.profile_pic, a.activity_user, a.video_id, a.notif_id";
 		$search['table'] = "notifications a, veeds_users b";
 		$search['where'] = "a.activity_user = b.user_id AND a.user_id = ".$_POST['user_id']."" /* AND a.notif_datetime > DATE_SUB(NOW(), INTERVAL 24 HOUR) 
-				    AND a.notif_datetime <= NOW()"*/; 
+				    AND a.notif_datetime <= NOW()"*/.$u_extend; 
 		$start = $_POST['count'] * 10;
 		$search['filters'] = "ORDER BY a.notif_datetime DESC LIMIT ".$start.", 10"; 
-		// echo implode(" ", $search);
+		echo implode(" ", $search);
 		$result = jp_get($search);
 		
 		$list['notifications'] = array();
