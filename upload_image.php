@@ -16,7 +16,7 @@
 			$_GET['place_id'] = $placeObj->getPlaceId();
 			$_GET['video_file'] = " ";
 			$_GET['video_thumb'] = $filename;
-			$_GET['location'] = str_replace("'",';quote;',$_GET['location']);
+			$_GET['address'] = str_replace("'",';quote;',$_GET['address']);
 			$_GET['video_name'] = str_replace("'",';quote;',$_GET['video_name']);
 			$_GET['description'] = str_replace("'",';quote;',$_GET['description']);
 			$_GET['date_upload'] = date('Y-m-d H:i:s');
@@ -31,16 +31,16 @@
 			jp_add($data);
 			$video_id = jp_last_added();
 
-			if(isset($_GET['user_id']) && isset($_GET['location'])){
-				if(!empty($_GET['location'])){
+			if(isset($_GET['user_id']) && isset($_GET['address'])){
+				if(!empty($_GET['address'])){
 
-					$data1['data'] = array('user_id' => $_GET['user_id'], 'location' => $_GET['location']);
+					$data1['data'] = array('user_id' => $_GET['user_id'], 'location' => $_GET['address']);
 					$data1['table'] = "veeds_users_location";
 					jp_add($data1);
 				}	
 			}
 
-			if(isset($_GET['coordinates']) && isset($_GET['location']) && isset($_GET['place_id'])){
+			if(isset($_GET['coordinates']) && isset($_GET['address']) && isset($_GET['place_id'])){
 
 				$search1['select'] = "location_id, place_id";
 				$search1['table'] = "veeds_establishment";
@@ -55,9 +55,9 @@
 
 					$data5['data'] = array(
 										'place_id' => $_GET['place_id'],
-										'place_name' => $_GET['location'], 
-										// 'place_name' => $_GET['place_name'], 
-										'location' => $_GET['location'], 
+										// 'place_name' => " ", 
+										'place_name' => $_GET['place_name'], 
+										'location' => $_GET['address'], 
 										'tags' => " ", 
 										// 'tags' => $trim_tags, 
 										'coordinates' => $_GET['coordinates']
@@ -227,7 +227,7 @@
 				}
 			}
 			
-			$result = array('reply' => '1', 'video' => $filename, 'place_id' => $_GET['place_id'], 'title' => $_GET['video_name'], 'description' => $_GET['description'], 'user_id' => $_GET['user_id'], 'date_upload' => $_GET['date_upload'], 'location' => $_GET['location'], 'video_id' => $video_id, 'list' => $list, 'files' => $_FILES);
+			$result = array('reply' => '1', 'video' => $filename, 'place_id' => $_GET['place_id'], 'title' => $_GET['video_name'], 'description' => $_GET['description'], 'user_id' => $_GET['user_id'], 'date_upload' => $_GET['date_upload'], 'location' => $_GET['address'], 'video_id' => $video_id, 'list' => $list, 'files' => $_FILES);
 		}else
 			$result = array('reply' => '2');
 		

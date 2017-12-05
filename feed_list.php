@@ -38,6 +38,12 @@
 			if(!in_array($row2['user_id_follow'], $blocks))
 				$in .= ', '.$row2['user_id_follow'];
 		}
+
+		if(count($blocks) > 0){
+			$block_extend = " AND a.user_id NOT IN (".implode(",", $blocks).")";
+		}else{
+			$block_extend = "";
+		}
 		// $search100['where'] = "a.user_id = b.user_id 
 		// 						AND a.user_id IN (".$in.")
 		// 						AND a.place_id != '' 
@@ -64,7 +70,7 @@
 								OR a.video_id IN (SELECT DISTINCT video_id 
 													FROM veeds_video_tags 
 													WHERE user_id IN (".$in.")
-								)";
+								)".$block_extend;
 		$start = $_POST['count'] * 100;
 		$search100['filters'] = "GROUP BY a.place_id ORDER BY a.date_upload DESC LIMIT ".$start.", 100";
 		// $search100['filters'] = "ORDER BY a.date_upload DESC LIMIT 1";
@@ -379,6 +385,7 @@
 					$row2 = array(
 									'location_id' => $row2['location_id'],
 									'place_id' => $row2['place_id'],
+									'place_name' => $row2['place_name'],
 									'coordinates' => $row2['coordinates'],
 									'user_id' => $row2['user_id'],
 									'video_id' => $row2['video_id'],
@@ -428,6 +435,7 @@
 					$row5 = array(
 									'location_id' => $row5['location_id'],
 									'place_id' => $row5['place_id'],
+									'place_name' => $row5['place_name'],
 									'coordinates' => $row5['coordinates'],
 									'user_id' => $row5['user_id'],
 									'video_id' => $row5['video_id'],
@@ -486,6 +494,7 @@
 							$row9 = array(
 								'location_id' => $row9['location_id'],
 								'place_id' => $row9['place_id'],
+								'place_name' => $row9['place_name'],
 								'coordinates' => $row9['coordinates'],
 								'user_id' => $row9['user_id'],
 								'video_id' => $row9['video_id'],
@@ -572,6 +581,7 @@
 										$row11 = array(
 													'location_id' => $row11['location_id'],
 													'place_id' => $row11['place_id'],
+													'place_name' => $row11['place_name'],
 													'coordinates' => $row11['coordinates'],
 													'user_id' => $row11['user_id'],
 													'video_id' => $row11['video_id'],
@@ -640,7 +650,7 @@
 													'location_id' => $row12['location_id'],
 													'place_id' => $row12['place_id'],
 													// 'place_name' => $placeName,
-													// 'place_name' => $row12['place_name'],
+													'place_name' => $row12['place_name'],
 													'coordinates' => $row12['coordinates'],
 													'user_id' => $row12['user_id'],
 													'video_id' => $row12['video_id'],
@@ -728,6 +738,7 @@
 								$row14 = array(
 											'location_id' => $row14['location_id'],
 											'place_id' => $row14['place_id'],
+											'place_name' => $row14['place_name'],
 											'coordinates' => $row14['coordinates'],
 											'user_id' => $row14['user_id'],
 											'video_id' => $row14['video_id'],
@@ -798,7 +809,7 @@
 									'location_id' => $row37['location_id'],
 									'place_id' => $row37['place_id'],
 									// 'place_name' => $placeName,
-									// 'place_name' => $row37['place_name'],
+									'place_name' => $row37['place_name'],
 									'coordinates' => $row37['coordinates'],
 									'user_id' => $row37['user_id'],
 									'video_id' => $row37['video_id'],
@@ -928,6 +939,7 @@
 					$row19 = array(
 									'location_id' => $row19['location_id'],
 									'place_id' => $row19['place_id'],
+									'place_name' => $row19['place_name'],
 									'coordinates' => $row19['coordinates'],
 									'user_id' => $row19['user_id'],
 									'video_id' => $row19['video_id'],
@@ -978,6 +990,7 @@
 					$row22 = array(
 									'location_id' => $row22['location_id'],
 									'place_id' => $row22['place_id'],
+									'place_name' => $row22['place_name'],
 									'coordinates' => $row22['coordinates'],
 									'user_id' => $row22['user_id'],
 									'video_id' => $row22['video_id'],
@@ -1036,6 +1049,7 @@
 							$row26 = array(
 								'location_id' => $row26['location_id'],
 								'place_id' => $row26['place_id'],
+								'place_name' => $row26['place_name'],
 								'coordinates' => $row26['coordinates'],
 								'user_id' => $row26['user_id'],
 								'video_id' => $row26['video_id'],
@@ -1123,7 +1137,7 @@
 													'location_id' => $row29['location_id'],
 													'place_id' => $row29['place_id'],
 													// 'place_name' => $placeName,
-													// 'place_name' => $row29['place_name'],
+													'place_name' => $row29['place_name'],
 													'coordinates' => $row29['coordinates'],
 													'user_id' => $row29['user_id'],
 													'video_id' => $row29['video_id'],
@@ -1191,6 +1205,7 @@
 										$row30 = array(
 													'location_id' => $row30['location_id'],
 													'place_id' => $row30['place_id'],
+													'place_name' => $row30['place_name'],
 													'coordinates' => $row30['coordinates'],
 													'user_id' => $row30['user_id'],
 													'video_id' => $row30['video_id'],
@@ -1277,6 +1292,7 @@
 								$row32 = array(
 											'location_id' => $row32['location_id'],
 											'place_id' => $row32['place_id'],
+											'place_name' => $row32['place_name'],
 											'coordinates' => $row32['coordinates'],
 											'user_id' => $row32['user_id'],
 											'video_id' => $row32['video_id'],
@@ -1332,6 +1348,7 @@
 					$row38 = array(
 								'location_id' => $row38['location_id'],
 								'place_id' => $row38['place_id'],
+								'place_name' => $row38['place_name'],
 								'coordinates' => $row38['coordinates'],
 								'user_id' => $row38['user_id'],
 								'video_id' => $row38['video_id'],

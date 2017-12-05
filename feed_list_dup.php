@@ -38,6 +38,12 @@
 			if(!in_array($row2['user_id_follow'], $blocks))
 				$in .= ', '.$row2['user_id_follow'];
 		}
+
+		if(count($blocks) > 0){
+			$block_extend = " AND a.user_id NOT IN (".implode(",", $blocks).")";
+		}else{
+			$block_extend = "";
+		}
 		// $search100['where'] = "a.user_id = b.user_id 
 		// 						AND a.user_id IN (".$in.")
 		// 						AND a.place_id != '' 
@@ -64,11 +70,11 @@
 								OR a.video_id IN (SELECT DISTINCT video_id 
 													FROM veeds_video_tags 
 													WHERE user_id IN (".$in.")
-								)";
+								)".$block_extend;
 		$start = $_POST['count'] * 100;
 		$search100['filters'] = "GROUP BY a.place_id ORDER BY a.date_upload DESC LIMIT ".$start.", 100";
 		// $search100['filters'] = "ORDER BY a.date_upload DESC LIMIT 1";
-		// echo implode(" ", $search100);
+		echo implode(" ", $search100);
 		$result = jp_get($search100);
 		
 		$list = array();

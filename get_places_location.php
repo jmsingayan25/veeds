@@ -33,19 +33,19 @@
 		}
 
 		// Get users followed by the user. User excluded if in the blocked list
-		// $search['select'] = "DISTINCT user_id_follow";
-		// $search['table'] = "veeds_users_follow";
-  //   	$search['where'] = "user_id = ".$_POST['user_id']." 
-  //   						AND user_id_follow != '".$_POST['user_id']."' 
-  //   						AND approved = 1".$u_extend;
-
 		$search['select'] = "DISTINCT user_id_follow";
 		$search['table'] = "veeds_users_follow";
-    	$search['where'] = "user_id_follow NOT IN (SELECT DISTINCT user_id_follow 
-    												FROM veeds_users_follow 
-    												WHERE user_id = '".$_POST['user_id']."' 
-    												AND user_id_follow != '".$_POST['user_id']."'
-    												AND approved = 1)".$u_extend;
+    	$search['where'] = "user_id = ".$_POST['user_id']." 
+    						AND user_id_follow != '".$_POST['user_id']."' 
+    						AND approved = 1".$u_extend;
+
+		// $search['select'] = "DISTINCT user_id_follow";
+		// $search['table'] = "veeds_users_follow";
+  //   	$search['where'] = "user_id_follow NOT IN (SELECT DISTINCT user_id_follow 
+  //   												FROM veeds_users_follow 
+  //   												WHERE user_id = '".$_POST['user_id']."' 
+  //   												AND user_id_follow != '".$_POST['user_id']."'
+  //   												AND approved = 1)".$u_extend;
     	$search['filters'] = "ORDER BY user_id_follow ASC";
 
 		if(jp_count($search) > 0){
@@ -118,7 +118,7 @@
 								AND h.place_id = e.place_id
 								AND h.user_id IN (".$users.")
 								AND h.place_id = '".$_POST['place_id']."'";
-		$search3['filters'] = "GROUP BY v.video_id ORDER BY v.date_upload DESC";
+		$search3['filters'] = "GROUP BY v.video_id DESC ORDER BY v.date_upload DESC";
 		// $search3['filters'] = "ORDER BY date_upload DESC HAVING COUNT(v.user_id) >= 5";						
 		$result3 = jp_get($search3);
 		while($row3 = mysqli_fetch_assoc($result3)){

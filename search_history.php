@@ -29,18 +29,24 @@
 				$block['select'] = "user_id_block";
 				$block['table'] = "veeds_users_block";
 				$block['where'] = "user_id = ".$_POST['user_id'];
-				$result_block = jp_get($block);
-				while($row3 = mysqli_fetch_assoc($result_block)){
-					$u_blocks[] = $row3['user_id_block'];
+				
+				if(jp_count($block) > 0){
+					$result_block = jp_get($block);
+					while($row3 = mysqli_fetch_assoc($result_block)){
+						$u_blocks[] = $row3['user_id_block'];
+					}
 				}
 
 				$block['select'] = "user_id";
 				$block['table'] = "veeds_users_block";
 				$block['where'] = "user_id_block = ".$_POST['user_id'];
-				$result_block = jp_get($block);
-				while($row3 = mysqli_fetch_assoc($result_block)){
-					if(!in_array($row3, $u_blocks))
-						$u_blocks[] = $row3['user_id'];
+
+				if(jp_count($block) > 0){
+					$result_block = jp_get($block);
+					while($row3 = mysqli_fetch_assoc($result_block)){
+						if(!in_array($row3, $u_blocks))
+							$u_blocks[] = $row3['user_id'];
+					}
 				}
 
 				if(count($u_blocks) > 0){
