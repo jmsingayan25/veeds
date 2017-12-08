@@ -70,7 +70,10 @@
 				$search['table'] = "veeds_establishment e, veeds_users u, veeds_videos v";
 				$search['where'] = "v.place_id = e.place_id 
 									AND v.user_id = u.user_id
-									AND (v.location LIKE '%".$explode_city[$i]."%'
+									AND v.location != '' AND e.place_name != ''
+									AND ('".$explode_city[$i]."' LIKE CONCAT(v.location,'%')
+									OR '".$explode_city[$i]."' LIKE CONCAT(e.place_name,'%') 
+									OR v.location LIKE '%".$explode_city[$i]."%'
 									OR e.place_name LIKE '%".$explode_city[$i]."%')".$u_extend_names;
 				$search['filters'] = "GROUP BY location_id ORDER BY date_upload DESC";
 				// echo implode(" ", $search);

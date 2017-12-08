@@ -2,8 +2,8 @@
 	
 	include("jp_library/jp_lib.php");
 
-	$_POST['user_id'] = "271";
-	$_POST['place_id'] = "7Q63H4RG CFHX";
+	$_POST['user_id'] = "286";
+	$_POST['place_id'] = "ChIJS4PaboC4lzMRNjesQNda8jA";
 	// $_POST['location'] = "Cambridge Cainta, Philippines";
 	if(isset($_POST['place_id'])){
 
@@ -58,7 +58,7 @@
 								AND h.user_id IN (".$users.")
 								AND h.place_id = '".$_POST['place_id']."'";
 		$search2['filters'] = "GROUP BY h.user_id";
-		// echo implode(" ", $search2);
+		echo implode(" ", $search2);
 		$result2 = jp_get($search2);
 		while($row2 = mysqli_fetch_assoc($result2)){
 
@@ -107,11 +107,12 @@
 		// 						AND h.place_id = '".$_POST['place_id']."'
 		// 						AND DATE_FORMAT(v.date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
 		$search3['where'] = "h.user_id = u.user_id
-								AND h.video_id = v.video_id
-								AND h.place_id = e.place_id
-								AND h.user_id IN (".$users.")
-								AND h.place_id = '".$_POST['place_id']."'";
-		$search3['filters'] = "GROUP BY v.video_id ORDER BY v.date_upload DESC";	
+											AND h.video_id = v.video_id
+											AND h.place_id = e.place_id
+											AND h.user_id IN (".$users.")
+											AND (h.place_id = '".$_POST['place_id']."'
+											OR e.location LIKE '%".$explode_location[$i]."%')";
+		$search3['filters'] = "GROUP BY v.video_id ORDER BY v.date_upload DESC";
 		// $search3['filters'] = "ORDER BY date_upload DESC HAVING COUNT(v.user_id) >= 5";						
 		$result3 = jp_get($search3);
 		while($row3 = mysqli_fetch_assoc($result3)){

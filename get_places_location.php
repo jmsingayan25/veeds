@@ -46,7 +46,7 @@
   //   												WHERE user_id = '".$_POST['user_id']."' 
   //   												AND user_id_follow != '".$_POST['user_id']."'
   //   												AND approved = 1)".$u_extend;
-    	$search['filters'] = "ORDER BY user_id_follow ASC";
+  //   	$search['filters'] = "ORDER BY user_id_follow ASC";
 
 		if(jp_count($search) > 0){
 			$result = jp_get($search);

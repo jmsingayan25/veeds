@@ -1,9 +1,10 @@
 <?php
 	
 	include("jp_library/jp_lib.php");
+	include("class_place.php");
 
-	$_POST['user_id'] = "271";
-	$_POST['place_id'] = "ChIJcSahHSa4lzMRtmL27Wx5P_U";
+	$_POST['user_id'] = "286";
+	$_POST['place_id'] = "ChIJS4PaboC4lzMRNjesQNda8jA";
 	if(isset($_POST['place_id'])){
 
 		$array = array();
@@ -106,33 +107,50 @@
 			$list['users'][] = $row2;
 		}
 
-		// Display posts by followed users that is within the place
-		$search3['select'] = " h.place_id, e.place_name, e.location, e.coordinates, v.video_id, v.video_name, v.description, v.video_file, v.video_thumb, v.date_upload, v.view_count, v.like_count, v.video_length, v.landscape_file, v.user_id";
-		$search3['table'] = "veeds_users u, veeds_videos v, veeds_establishment e, veeds_users_visit_history h";
-		// $search3['where'] = "h.user_id = u.user_id
-		// 						AND h.video_id = v.video_id
-		// 						AND h.place_id = e.place_id
-		// 						AND h.user_id IN (".$users.")
-		// 						AND h.place_id = '".$_POST['place_id']."'
-		// 						AND DATE_FORMAT(v.date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
-		$search3['where'] = "h.user_id = u.user_id
-								AND h.video_id = v.video_id
-								AND h.place_id = e.place_id
-								AND h.user_id IN (".$users.")
-								AND h.place_id = '".$_POST['place_id']."'";
-		$search3['filters'] = "GROUP BY v.video_id ORDER BY v.date_upload DESC";
-		// $search3['filters'] = "ORDER BY date_upload DESC HAVING COUNT(v.user_id) >= 5";						
-		$result3 = jp_get($search3);
-		while($row3 = mysqli_fetch_assoc($result3)){
+		$search4['select'] = "location";
+		$search4['table'] = "veeds_establishment";
+		$search4['where'] = "place_id = '".$_POST['place_id']."'";
 
-			$row3['view_count'] = (int)$row3['view_count'];
-			$row3['video_length'] = (int)$row3['video_length'];
-			$row3['like_count'] = (int)$row3['like_count'];
-			$row3['logged_id'] = $_POST['user_id'];
+		if(jp_count($search4) > 0){
 
-			$list['videos'][] = $row3;
+			$location_result = jp_get($search4);
+			$location_row = mysqli_fetch_assoc($location_result);
+
+			$explode_location = explode(",", $location_row['location']);
+			for ($i=0; $i < count($explode_location); $i++) { 
+				if($i < 2){
+
+					// Display posts by followed users that is within the place
+					$search3['select'] = "DISTINCT h.place_id, e.place_name, e.location, e.coordinates, v.video_id, v.video_name, v.description, v.video_file, v.video_thumb, v.date_upload, v.view_count, v.like_count, v.video_length, v.landscape_file, v.user_id";
+					$search3['table'] = "veeds_users u, veeds_videos v, veeds_establishment e, veeds_users_visit_history h";
+					// $search3['where'] = "h.user_id = u.user_id
+					// 						AND h.video_id = v.video_id
+					// 						AND h.place_id = e.place_id
+					// 						AND h.user_id IN (".$users.")
+					// 						AND h.place_id = '".$_POST['place_id']."'
+					// 						AND DATE_FORMAT(v.date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
+					$search3['where'] = "h.user_id = u.user_id
+											AND h.video_id = v.video_id
+											AND h.place_id = e.place_id
+											AND h.user_id IN (".$users.")
+											AND (h.place_id = '".$_POST['place_id']."'
+											OR e.location LIKE '%".$explode_location[$i]."%')";
+					$search3['filters'] = "GROUP BY v.video_id ORDER BY v.date_upload DESC";
+					// $search3['filters'] = "ORDER BY date_upload DESC HAVING COUNT(v.user_id) >= 5";					
+					echo implode(" ", $search3);
+					$result3 = jp_get($search3);
+					while($row3 = mysqli_fetch_assoc($result3)){
+
+						$row3['view_count'] = (int)$row3['view_count'];
+						$row3['video_length'] = (int)$row3['video_length'];
+						$row3['like_count'] = (int)$row3['like_count'];
+						$row3['logged_id'] = $_POST['user_id'];
+
+						$list['videos'][] = $row3;
+					}
+				}
+			}
 		}
-
 		echo json_encode($list);
 	}
 ?>

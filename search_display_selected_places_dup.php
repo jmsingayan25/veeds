@@ -9,8 +9,8 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "271";
-	$_POST['keyword'] = "Mandaluyong, Metro Manila, Philippines";
+	$_POST['user_id'] = "183";
+	$_POST['keyword'] = "Makati Medical Center Radiology Department";
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 
 		// $placeIdDetail = new classPlaceID;
@@ -252,17 +252,22 @@
 			if(strpos($explode_city[$i], 'City') !== FALSE){
 				$explode_city[$i] = str_replace(" City", "", $explode_city[$i]);
 			}
-			echo $explode_city[$i]."<br>";
+			// echo $explode_city[$i]."<br>";
 			if($i < 1){
 
 				$search['select'] = "location_id, v.user_id, v.place_id, e.place_name, v.location as address, v.coordinates, firstname, lastname, username, profile_pic, video_id, video_name, description, v.video_file, video_thumb, date_upload, date_expiry, view_count, like_count, video_length, landscape_file";
 				$search['table'] = "veeds_establishment e, veeds_users u, veeds_videos v";
 				$search['where'] = "v.place_id = e.place_id 
 									AND v.user_id = u.user_id
-									AND (v.location LIKE '%".$explode_city[$i]."%'
+									AND v.location != '' AND e.place_name != ''
+									AND ('".$explode_city[$i]."' LIKE CONCAT(v.location,'%')
+									OR '".$explode_city[$i]."' LIKE CONCAT(e.place_name,'%') 
+									OR '".$explode_city[$i]."' LIKE CONCAT('%',v.location)
+									OR '".$explode_city[$i]."' LIKE CONCAT('%',e.place_name) 
+									OR OR v.location LIKE '%".$explode_city[$i]."%'
 									OR e.place_name LIKE '%".$explode_city[$i]."%')".$u_extend_names;
 				$search['filters'] = "GROUP BY location_id ORDER BY date_upload DESC";
-				// echo implode(" ", $search);
+				echo implode(" ", $search);
 				if(jp_count($search) > 0){
 
 					$result = jp_get($search);

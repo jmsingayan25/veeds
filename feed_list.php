@@ -792,7 +792,7 @@
 	 													FROM veeds_users_visit_history
 	  													WHERE user_id IN (".$users.")
 	 													GROUP BY place_id)";
-			$search37['filters'] = "GROUP BY h.place_id ORDER BY COUNT(DISTINCT h.user_id) DESC";
+			$search37['filters'] = "GROUP BY h.place_id";
 			// echo implode(" ", $search37)."<br>";
 			if(jp_count($search37) > 0){
 
