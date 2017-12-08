@@ -799,6 +799,11 @@
 			$_POST['gender'] = 0;
 			$_POST['bday'] = date("Y-m-d");
 
+			$search4['select'] = "isProfileSet";
+			$search4['table'] = "veeds_users";
+			$search4['where'] = "email = '".$_POST['email']."' AND isProfileSet = 1";
+			$profileset_result = mysqli_fetch_assoc(jp_get($search4));
+	
 			$search3['select'] = "signup_code";
 			$search3['table'] = "veeds_users";
 			$search3['where'] = "email = '".$_POST['email']."'";
@@ -822,52 +827,56 @@
 			// 	}
 
 			// }
-			if (jp_count($search2) > 0) {
-				if(!is_null($signup_codeResult)){
-					$reply = array('signup' => 'Email has already been used to register and has a sign up code sent to this email address', 'code' => 4);
-				}else{
-					$reply = array('signup' => 'Email already taken', 'code' => 1, 'code' => $signup_codeResult);
-				}
-			}else if(jp_add($data)){
-					$to = $_POST['email'];
-
-					$subject = "[Quikflik] Your Signup Code";
-
-					$mail = new PHPMailer;
-					$mail->isSMTP();
-					$mail->Host = "email-smtp.us-east-1.amazonaws.com";
-					$mail->SMTPAuth = true;
-					$mail->Username = "AKIAI6XRKRWODRM4FEWQ";
-					$mail->Password = "Agx3F2e2bNtQyO/rAArHSZl5oV5++XLBfiszbdYpnPlX";
-					$mail->SMTPSecure = "tls";
-					$mail->Port = 587;
-					$mail->From = "noreply@loopbookinc.com";
-					$mail->FromName = "Quikflik";
-					$mail->addAddress($to);
-					$mail->isHTML(true);
-
-					$message = "<html><body>Hi, <br> You have requested for a reset code and your code is:".$_POST['signup_code']."<br />";
-					$message .= "Please note that this reset code is only valid until you change your password. <br />";
-					$message .= "Thank You!	<br>";
-					$message .= "Quikflik Team</body></html>";
-
-					$message2 = "Hi, \n you have requested for a reset code and your code is: ".$_POST['signup_code']." \n";
-					$message2 .= "Please note that this reset code is only valid until you change your password. \n";
-					$message2 .= "Thank You! \n";
-					$message2 .= "Quikflik Team";
-
-					$mail->Subject = $subject;
-					$mail->Body = $message;
-					$mail->AltBody = $message2;
-					if(!$mail->send()) {
-						$reply = array('reply' => '2', 'message' => 'email not sent');
-					}else{
-						$reply = array('reply' => '1');
-						$reply = array('signup' => 'Sign up successful', 'code' => 2, 'signup_code' => $_POST['signup_code']);
-					}
-
+			if(jp_count($search4) > 0){
+				$reply = array('signup' => 'Email already been used', 'code' => 0);
 			}else{
-				$reply = array('signup' => 'Could not complete your signup, please try again!', 'code' => 3, 'post' => $_POST);
+				if (jp_count($search2) > 0) {
+					if(!is_null($signup_codeResult)){
+						$reply = array('signup' => 'Email has already been used to register and has a sign up code sent to this email address', 'code' => 4);
+					}else{
+						$reply = array('signup' => 'Email already taken', 'code' => 1, 'code' => $signup_codeResult);
+					}
+				}else if(jp_add($data)){
+						$to = $_POST['email'];
+
+						$subject = "[Quikflik] Your Signup Code";
+
+						$mail = new PHPMailer;
+						$mail->isSMTP();
+						$mail->Host = "email-smtp.us-east-1.amazonaws.com";
+						$mail->SMTPAuth = true;
+						$mail->Username = "AKIAI6XRKRWODRM4FEWQ";
+						$mail->Password = "Agx3F2e2bNtQyO/rAArHSZl5oV5++XLBfiszbdYpnPlX";
+						$mail->SMTPSecure = "tls";
+						$mail->Port = 587;
+						$mail->From = "noreply@loopbookinc.com";
+						$mail->FromName = "Quikflik";
+						$mail->addAddress($to);
+						$mail->isHTML(true);
+
+						$message = "<html><body>Hi, <br> You have requested for a reset code and your code is:".$_POST['signup_code']."<br />";
+						$message .= "Please note that this reset code is only valid until you change your password. <br />";
+						$message .= "Thank You!	<br>";
+						$message .= "Quikflik Team</body></html>";
+
+						$message2 = "Hi, \n you have requested for a reset code and your code is: ".$_POST['signup_code']." \n";
+						$message2 .= "Please note that this reset code is only valid until you change your password. \n";
+						$message2 .= "Thank You! \n";
+						$message2 .= "Quikflik Team";
+
+						$mail->Subject = $subject;
+						$mail->Body = $message;
+						$mail->AltBody = $message2;
+						if(!$mail->send()) {
+							$reply = array('reply' => '2', 'message' => 'email not sent');
+						}else{
+							$reply = array('reply' => '1');
+							$reply = array('signup' => 'Sign up successful', 'code' => 2, 'signup_code' => $_POST['signup_code']);
+						}
+
+				}else{
+					$reply = array('signup' => 'Could not complete your signup, please try again!', 'code' => 3, 'post' => $_POST);
+				}
 			}
 		}
 		echo json_encode($reply);

@@ -756,76 +756,76 @@
 			}
 		}
 
-		$search38['select'] = "COUNT(DISTINCT place_id) as place_count";
-		$search38['table'] = "veeds_users_visit_history";
-		$search38['where'] = "user_id = '".$_POST['user_id']."'";
+		// $search38['select'] = "COUNT(DISTINCT place_id) as place_count";
+		// $search38['table'] = "veeds_users_visit_history";
+		// $search38['where'] = "user_id = '".$_POST['user_id']."'";
 
-		$count_result = jp_get($search38);
-		$place_count = mysqli_fetch_assoc($count_result);
+		// $count_result = jp_get($search38);
+		// $place_count = mysqli_fetch_assoc($count_result);
 
-		//	$vals = number of unique tags of establishment
-		//	User has followed users and has visited 	less than 10 unique places
-		if($users != "''" && $place_count['place_count'] < 10){
+		// //	$vals = number of unique tags of establishment
+		// //	User has followed users and has visited 	less than 10 unique places
+		// if($users != "''" && $place_count['place_count'] < 10){
 
-			$search37['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
-			$search37['table'] = "veeds_establishment e, veeds_users_visit_history h, veeds_videos v";
-			// $search37['where'] = "h.place_id = e.place_id
-			// 						AND h.video_id = v.video_id
-			// 						AND h.user_id IN (".$users.")
-			// 						AND h.place_id NOT IN (SELECT place_id 
-			// 												FROM veeds_users_visit_history 
-			// 												WHERE user_id = '".$_POST['user_id']."')
-			// 						AND (hashtags LIKE '%".$final_word."%' OR place_name LIKE '%".$final_word."%')
-			// 							AND date_visit IN (SELECT MAX(date_visit)
-	 	// 												FROM veeds_users_visit_history
-	  // 													WHERE user_id IN (".$users.")
-	 	// 												GROUP BY place_id)
-	 	// 							AND DATE_FORMAT(date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
-			$search37['where'] = "h.place_id = e.place_id
-									AND h.video_id = v.video_id
-									AND h.place_id != ''
-									AND h.user_id IN (".$users.")
-									AND h.place_id NOT IN (SELECT place_id 
-															FROM veeds_users_visit_history 
-															WHERE user_id = '".$_POST['user_id']."')
-									AND date_visit IN (SELECT MAX(date_visit)
-	 													FROM veeds_users_visit_history
-	  													WHERE user_id IN (".$users.")
-	 													GROUP BY place_id)";
-			$search37['filters'] = "GROUP BY h.place_id";
-			// echo implode(" ", $search37)."<br>";
-			if(jp_count($search37) > 0){
+		// 	$search37['select'] = "h.place_id, location_id, place_name, e.coordinates, h.user_id, h.video_id, video_thumb, date_upload, date_expiry";
+		// 	$search37['table'] = "veeds_establishment e, veeds_users_visit_history h, veeds_videos v";
+		// 	// $search37['where'] = "h.place_id = e.place_id
+		// 	// 						AND h.video_id = v.video_id
+		// 	// 						AND h.user_id IN (".$users.")
+		// 	// 						AND h.place_id NOT IN (SELECT place_id 
+		// 	// 												FROM veeds_users_visit_history 
+		// 	// 												WHERE user_id = '".$_POST['user_id']."')
+		// 	// 						AND (hashtags LIKE '%".$final_word."%' OR place_name LIKE '%".$final_word."%')
+		// 	// 							AND date_visit IN (SELECT MAX(date_visit)
+	 // 	// 												FROM veeds_users_visit_history
+	 //  // 													WHERE user_id IN (".$users.")
+	 // 	// 												GROUP BY place_id)
+	 // 	// 							AND DATE_FORMAT(date_expiry,'%Y-%m-%d %H:%i %s') > NOW()";
+		// 	$search37['where'] = "h.place_id = e.place_id
+		// 							AND h.video_id = v.video_id
+		// 							AND h.place_id != ''
+		// 							AND h.user_id IN (".$users.")
+		// 							AND h.place_id NOT IN (SELECT place_id 
+		// 													FROM veeds_users_visit_history 
+		// 													WHERE user_id = '".$_POST['user_id']."')
+		// 							AND date_visit IN (SELECT MAX(date_visit)
+	 // 													FROM veeds_users_visit_history
+	 //  													WHERE user_id IN (".$users.")
+	 // 													GROUP BY place_id)";
+		// 	$search37['filters'] = "GROUP BY h.place_id";
+		// 	// echo implode(" ", $search37)."<br>";
+		// 	if(jp_count($search37) > 0){
 
-	 			$result37 = jp_get($search37);
-	 			while ($row37 = mysqli_fetch_assoc($result37)) {
+	 // 			$result37 = jp_get($search37);
+	 // 			while ($row37 = mysqli_fetch_assoc($result37)) {
 
-	 				if(!in_array($row37['location_id'],$location['location'])){
-						$location['location'][] = $row37['location_id'];
+	 // 				if(!in_array($row37['location_id'],$location['location'])){
+		// 				$location['location'][] = $row37['location_id'];
 					
-						// $placeIdDetail->setPlaceId($row37['place_id']);
-						// $placeName = $placeIdDetail->getPlaceName();
+		// 				// $placeIdDetail->setPlaceId($row37['place_id']);
+		// 				// $placeName = $placeIdDetail->getPlaceName();
 
-						$row37 = array(
-									'location_id' => $row37['location_id'],
-									'place_id' => $row37['place_id'],
-									// 'place_name' => $placeName,
-									'place_name' => $row37['place_name'],
-									'coordinates' => $row37['coordinates'],
-									'user_id' => $row37['user_id'],
-									'video_id' => $row37['video_id'],
-									'video_thumb' => $row37['video_thumb'],
-									'date_upload' => $row37['date_upload'],
-									'date_expiry' => $row37['date_expiry'],
-									'logged_id' => $_POST['user_id']
-								);
+		// 				$row37 = array(
+		// 							'location_id' => $row37['location_id'],
+		// 							'place_id' => $row37['place_id'],
+		// 							// 'place_name' => $placeName,
+		// 							'place_name' => $row37['place_name'],
+		// 							'coordinates' => $row37['coordinates'],
+		// 							'user_id' => $row37['user_id'],
+		// 							'video_id' => $row37['video_id'],
+		// 							'video_thumb' => $row37['video_thumb'],
+		// 							'date_upload' => $row37['date_upload'],
+		// 							'date_expiry' => $row37['date_expiry'],
+		// 							'logged_id' => $_POST['user_id']
+		// 						);
 
-		 				// if(!in_array($row37, $list['places'])){
-		 					$list['places'][] = $row37;
-		 				// }
-					}
-	 			}
-	 		}
-		}
+		//  				// if(!in_array($row37, $list['places'])){
+		//  					$list['places'][] = $row37;
+		//  				// }
+		// 			}
+	 // 			}
+	 // 		}
+		// }
 
 		// if(!empty($location['location'])){
 		// 	$location_ext = " AND e.location_id IN (".implode(",", $location['location']).")";
