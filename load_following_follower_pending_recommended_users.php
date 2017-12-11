@@ -8,18 +8,46 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "183";
+	$_POST['user_id'] = "251";
 
 	if(isset($_POST)){
 
 		$list = array();
 		$suggested_user = array();
 		$array = array();
+		$u_blocks = array();
+
+		$block['select'] = "DISTINCT user_id_block";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row = mysqli_fetch_assoc($result_block)){
+			$u_blocks[] = $row['user_id_block'];
+		}
+
+		// Get users blocked by the user
+		$block['select'] = "DISTINCT user_id";
+		$block['table'] = "veeds_users_block";
+		$block['where'] = "user_id_block = ".$_POST['user_id'];
+		$result_block = jp_get($block);
+		while($row = mysqli_fetch_assoc($result_block)){
+			if(!in_array($row, $u_blocks))
+				$u_blocks[] = $row['user_id'];
+		}
+
+		if(count($u_blocks) > 0){
+			$u_extend_followed = " AND user_id_follow NOT IN (".implode(",", $u_blocks).")";
+			$u_extend_follower = " AND user_id NOT IN (".implode(",", $u_blocks).")";
+		}else{
+			$u_extend_followed = "";
+			$u_extend_follower = "";
+		}
 
 		$search['select'] = "firstname, lastname, username, personal_information, u.user_id, profile_pic, gender, private";
 		$search['table'] = "veeds_users u, veeds_users_follow f";
 		$search['where'] = "f.user_id_follow = u.user_id
-							AND f.user_id = '".$_POST['user_id']."' AND approved = 1";
+							AND f.user_id = '".$_POST['user_id']."' 
+							AND approved = 1".$u_extend_followed;
 
 		if(jp_count($search) > 0){
 
@@ -69,7 +97,8 @@
 		$search4['select'] = "firstname, lastname, username, personal_information, u.user_id, profile_pic, gender, private";
 		$search4['table'] = "veeds_users u, veeds_users_follow f";
 		$search4['where'] = "f.user_id = u.user_id
-							AND f.user_id_follow = '".$_POST['user_id']."' AND approved = 1";
+							AND f.user_id_follow = '".$_POST['user_id']."' 
+							AND approved = 1".$u_extend_follower;
 
 		if(jp_count($search4) > 0){
 

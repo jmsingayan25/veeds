@@ -62,7 +62,7 @@
 
 						$search2['select'] = "user_id, username, firstname, lastname, personal_information, profile_pic";
 						$search2['table'] = "veeds_users";
-						$search2['where'] = "username = '".$row1['user_id_search']."'";
+						$search2['where'] = "username = '".$row1['user_id_search']."'".$u_extend_names;
 
 						if(jp_count($search2) > 0){
 

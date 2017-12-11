@@ -5,9 +5,9 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "49";
+	$_POST['user_id'] = "183";
 	if(isset($_POST['user_id'])){
-		
+
 		$u_blocks = array();
 
 		$block['select'] = "DISTINCT user_id_block";
@@ -33,14 +33,16 @@
 		}else{
 			$u_extend = "";
 		}
-
-		$search['select'] = "a.type, a.notif_datetime, b.username, b.firstname, b.lastname, b.profile_pic, a.activity_user, a.video_id, a.notif_id";
+					
+		$search['select'] = "a.type, a.notif_datetime, b.username, b.firstname, b.lastname, b.profile_pic, a.activity_user, a.video_id, a.notif_id, a.user_id";
 		$search['table'] = "notifications a, veeds_users b";
-		$search['where'] = "a.activity_user = b.user_id AND a.user_id = ".$_POST['user_id']."" /* AND a.notif_datetime > DATE_SUB(NOW(), INTERVAL 24 HOUR) 
+		$search['where'] = "a.activity_user = b.user_id 
+							AND a.activity_user != ".$_POST['user_id']."" /* AND a.notif_datetime > DATE_SUB(NOW(), INTERVAL 24 HOUR) 
 				    AND a.notif_datetime <= NOW()"*/.$u_extend; 
-		$start = $_POST['count'] * 10;
+		// $start = $_POST['count'] * 10-10;
+		$start = $_POST['count'] * 10;		
 		$search['filters'] = "ORDER BY a.notif_datetime DESC LIMIT ".$start.", 10"; 
-		echo implode(" ", $search);
+		
 		$result = jp_get($search);
 		
 		$list['notifications'] = array();
@@ -67,7 +69,7 @@
 
 			if($row['type'] == "started_following" || $row['type']== "accepted" || $row['type']== "request"){
 				// $notif['user_id'] = $row['activity_user'];
-				$notif['user_id'] = $_POST['user_id'];
+				$notif['user_id'] = $row['user_id'];
 			}else{
 				$notif['video_id'] = $row['video_id'];
 			}
@@ -89,7 +91,6 @@
 		}
 		
 		echo json_encode($list);
-		
 	}
 	
 ?>

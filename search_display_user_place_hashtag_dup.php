@@ -12,7 +12,7 @@
 
 	$_POST['user_id'] = "271";
 	$_POST['keyword'] = "chicken";
-	$_POST['coordinates'] = "14.590843,121.126404";
+	// $_POST['coordinates'] = "14.590843,121.126404";
 	
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 		

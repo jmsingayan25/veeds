@@ -35,8 +35,8 @@
 					
 		$search['select'] = "a.type, a.notif_datetime, b.username, b.firstname, b.lastname, b.profile_pic, a.activity_user, a.video_id, a.notif_id";
 		$search['table'] = "notifications a, veeds_users b";
-		$search['where'] = "a.user_id = b.user_id 
-							AND a.activity_user = ".$_POST['user_id']."" /* AND a.notif_datetime > DATE_SUB(NOW(), INTERVAL 24 HOUR) 
+		$search['where'] = "a.activity_user = b.user_id 
+							AND a.activity_user != ".$_POST['user_id']."" /* AND a.notif_datetime > DATE_SUB(NOW(), INTERVAL 24 HOUR) 
 				    AND a.notif_datetime <= NOW()"*/.$u_extend; 
 		// $start = $_POST['count'] * 10-10;
 		$start = $_POST['count'] * 10;		

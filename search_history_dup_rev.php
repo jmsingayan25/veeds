@@ -205,38 +205,23 @@
 
 					$result7 = jp_get($search7);
 					while ($row7 = mysqli_fetch_assoc($result7)) {
-						
-						$search8['select'] = "hashtag";
-						$search8['table'] = "veeds_hashtag";
-						$search8['where'] = "user_id = '".$_POST['user_id']."' AND hashtag = '".$row7['user_id_search']."'";
-
-						if(jp_count($search8) > 0){
-
-							$result8 = jp_get($search8);
-							while ($row8 = mysqli_fetch_assoc($result8)) {
 								
-								$row8 = array(
-											// 'category' => 'Hashtags',
-											// 'hashtag' => $row8['hashtag'],
-											// // 'search_date' => $row7['search_date'],
-											// 'logged_id' => $_POST['user_id']
+						$row8 = array(
 
-											'category' => "Hashtags",
-											'user_id' => "",
-											'username' => $row8['hashtag'],
-											'firstname' => "",
-											'lastname' => "",
-											'personal_information' => "",
-											'profile_pic' => "",
-											'search_date' => $row7['search_date'],
-											'followed' => "",
-											'blocked' => "",
-											'logged_id' => $_POST['user_id']
-										);
+									'category' => "Hashtags",
+									'user_id' => "",
+									'username' => $row7['user_id_search'],
+									'firstname' => "",
+									'lastname' => "",
+									'personal_information' => "",
+									'profile_pic' => "",
+									'search_date' => $row7['search_date'],
+									'followed' => 0,
+									'blocked' => false,
+									'logged_id' => $_POST['user_id']
+								);
 
-								$list['history'][] = $row8;
-							}
-						}
+						$list['history'][] = $row8;
 					}
 				}
 			}
