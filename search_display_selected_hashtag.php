@@ -71,6 +71,10 @@
 					$row['like_type'] = "";
 				}
 
+				if($row['landscape_file'] == NULL){
+					$row['landscape_file'] = "";
+				}
+				
 				$row = array(
 					'category' => "Hashtags",
 					'firstname' => $row['firstname'],

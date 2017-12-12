@@ -89,7 +89,12 @@
 			$filesImage = '/xampp/htdocs/veeds/thumbnails/'.$fileimage;
 
 			if ((!is_null($row['landscape_file']) && file_exists($filesVideo)) || (!is_null($row['video_thumb']) && file_exists($filesImage))) {
-				include('video_checks.php');	
+				include('video_checks.php');
+
+				if($row['landscape_file'] == NULL){
+					$row['landscape_file'] = "";
+				}
+
 				$row['video_name'] = str_replace(';quote;',"'", $row['video_name']);
 				$row['description'] = str_replace(';quote;',"'", $row['description']);
 				$row['user_id'] = $_POST['user_id'];

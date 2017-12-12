@@ -161,6 +161,10 @@
 					$row['tag'] = false;
 				}
 
+				if($row['landscape_file'] == NULL){
+					$row['landscape_file'] = "";
+				}
+				
 				$row['user_id'] = $_POST['user_id'];
 				$list['active'][] = $row;
 

@@ -98,6 +98,11 @@
 				if ((!is_null($row['landscape_file']) && !is_null($row['video_thumb'])) || !is_null($row['video_thumb'])) {
 					$_POST['user_id'] = $_POST['logged_id'];
 					include('video_checks.php');	
+
+					if($row['landscape_file'] == NULL){
+						$row['landscape_file'] = "";
+					}
+				
 					$row['video_name'] = str_replace(';quote;',"'", $row['video_name']);
 					$row['description'] = str_replace(';quote;',"'", $row['description']);
 					//$row['user_id'] = $user_id;
@@ -317,7 +322,12 @@
 			while($row = mysqli_fetch_assoc($result)){
 				if (!is_null($row['landscape_file']) || !is_null($row['video_thumb'])) {
 					$_POST['user_id'] = $_POST['logged_id'];
-					include('video_checks.php');	
+					include('video_checks.php');
+
+					if($row['landscape_file'] == NULL){
+						$row['landscape_file'] = "";
+					}
+						
 					$row['video_name'] = str_replace(';quote;',"'", $row['video_name']);
 					$row['description'] = str_replace(';quote;',"'", $row['description']);
 					//$row['user_id'] = $user_id;

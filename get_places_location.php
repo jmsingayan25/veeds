@@ -164,6 +164,10 @@
 					$result3 = jp_get($search3);
 					while($row3 = mysqli_fetch_assoc($result3)){
 
+						if($row3['landscape_file'] == NULL){
+							$row3['landscape_file'] = "";
+						}
+				
 						$row3['view_count'] = (int)$row3['view_count'];
 						$row3['video_length'] = (int)$row3['video_length'];
 						$row3['like_count'] = (int)$row3['like_count'];
