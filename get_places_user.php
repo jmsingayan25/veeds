@@ -50,7 +50,7 @@
 
 		// Display user info
 		$users = implode(",", $array['users_follow']);
-		$search2['select'] = "DISTINCT u.user_id, u.firstname, u.lastname, u.email, u.bday, u.gender, u.username, u.profile_pic, u.cover_photo, u.country, u.private, COUNT(DISTINCT DATE_FORMAT(h.date_visit,'%m-%d-%y')) as visit_count";
+		$search2['select'] = "DISTINCT h.place_id, u.user_id, u.firstname, u.lastname, u.email, u.bday, u.gender, u.username, u.profile_pic, u.cover_photo, u.country, u.private, COUNT(DISTINCT DATE_FORMAT(h.date_visit,'%m-%d-%y')) as visit_count";
 		$search2['table'] = "veeds_users u, veeds_users_visit_history h";
 		$search2['where'] = "h.user_id = u.user_id 
 								AND h.user_id IN (".$users.")
