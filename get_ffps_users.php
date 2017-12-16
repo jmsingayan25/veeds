@@ -8,7 +8,7 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "251";
+	// $_POST['user_id'] = "251";
 
 	if(isset($_POST)){
 
@@ -82,8 +82,13 @@
 					$row['blocked'] = false;
 				}
 
+				if($row['private'] == 0){
+					$row['private'] = false;
+				}else{
+					$row['private'] = true;
+				}
+				
 				$row['gender'] = (int)$row['gender'];
-				$row['private'] = (int)$row['private'];
 				$row['logged_id'] = $_POST['user_id'];
 
 				if(!in_array($row['user_id'], $array)){
@@ -133,8 +138,13 @@
 					$row['blocked'] = false;
 				}
 
+				if($row['private'] == 0){
+					$row['private'] = false;
+				}else{
+					$row['private'] = true;
+				}
+				
 				$row['gender'] = (int)$row['gender'];
-				$row['private'] = (int)$row['private'];
 				$row['logged_id'] = $_POST['user_id'];
 
 				if(!in_array($row['user_id'], $array)){
@@ -183,15 +193,75 @@
 					$row['blocked'] = false;
 				}
 
+				if($row['private'] == 0){
+					$row['private'] = false;
+				}else{
+					$row['private'] = true;
+				}
+				
 				$row['gender'] = (int)$row['gender'];
-				$row['private'] = (int)$row['private'];
 				$row['logged_id'] = $_POST['user_id'];
 
 				if(!in_array($row['user_id'], $array)){
 					$array[] = $row['user_id'];
 				}
 
-				$list['pending_user'][] = $row;
+				$list['pending_followed_user'][] = $row;
+			}
+		}
+
+		$search19['select'] = "firstname, lastname, username, personal_information, u.user_id, profile_pic, gender, private";
+		$search19['table'] = "veeds_users u, veeds_users_follow f";
+		$search19['where'] = "f.user_id = u.user_id
+							AND f.user_id_follow = '".$_POST['user_id']."' AND approved = 0";
+							// echo implode(" ", $search19);
+		if(jp_count($search19) > 0){
+
+			$result = jp_get($search19);
+			while ($row = mysqli_fetch_assoc($result)) {
+
+				$search20['select'] = "user_id";
+				$search20['table'] = "veeds_users_follow";
+				$search20['where'] = "user_id_follow = '".$_POST['user_id']."' AND user_id = '".$row['user_id']."' AND approved = 1";
+				
+				$count = jp_count($search20);
+				if($count > 0){
+					$row['followed'] = 1;
+				}else{
+					$search21['table'] = "veeds_users_follow";
+					$search21['where'] = "user_id = '".$_POST['user_id']."' AND user_id_follow = '".$row['user_id']."' AND approved = 0";
+					$count2 = jp_count($search21);
+					if($count2 > 0)
+						$row['followed'] = 2;
+					else
+						$row['followed'] = 0;
+				}
+
+				$search22['select'] = "user_id";
+				$search22['table'] = "veeds_users_block";
+				$search22['where'] = "user_id = '".$_POST['user_id']."' AND user_id_block = '".$row['user_id']."'"; 
+
+				$count3 = (int)jp_count($search22);
+				if($count3 > 0){
+					$row['blocked'] = true;
+				}else{
+					$row['blocked'] = false;
+				}
+
+				if($row['private'] == 0){
+					$row['private'] = false;
+				}else{
+					$row['private'] = true;
+				}
+				
+				$row['gender'] = (int)$row['gender'];
+				$row['logged_id'] = $_POST['user_id'];
+
+				if(!in_array($row['user_id'], $array)){
+					$array[] = $row['user_id'];
+				}
+
+				$list['pending_follower_user'][] = $row;
 			}
 		}
 
@@ -245,7 +315,8 @@
 	    $search15['select'] = "firstname, lastname, username, personal_information, user_id, profile_pic, gender, private";
 	    $search15['table'] = "veeds_users";
 	    $search15['where'] = "user_id IN (".implode(",",$suggested_user).")
-	    						AND user_id NOT IN (".implode(",",$array).")";
+	    						AND user_id NOT IN (".implode(",",$array).")
+	    						AND user_id != '".$_POST['user_id']."'";
 		$search15['filters'] = "LIMIT ".$start.", 15";
 		// echo implode(" ",$search15);
 		if(jp_count($search15) > 0){
@@ -280,8 +351,13 @@
 					$row['blocked'] = false;
 				}
 
+				if($row['private'] == 0){
+					$row['private'] = false;
+				}else{
+					$row['private'] = true;
+				}
+				
 				$row['gender'] = (int)$row['gender'];
-				$row['private'] = (int)$row['private'];
 				$row['logged_id'] = $_POST['user_id'];
 			 	$list['suggested_user'][] = $row;
 			}

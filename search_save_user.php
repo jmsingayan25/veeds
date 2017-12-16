@@ -10,11 +10,12 @@
 	if(isset($_POST['user_id']) && isset($_POST['keyword']) && isset($_POST['category'])){
 
 		$reply = array();
-
+		$keyword = jp_escape($_POST['keyword']);
+		
 		$search['select'] = "user_id, user_id_search";
 		$search['table'] = "veeds_users_history";
 		$search['where'] = "user_id = '".$_POST['user_id']."' 
-							AND user_id_search = '".$_POST['keyword']."'
+							AND user_id_search = '".$keyword."'
 							AND category = '".$_POST['category']."'";
 
 		if(jp_count($search) > 0){
@@ -22,7 +23,7 @@
 			$data['data'] = array('search_date' => $_POST['search_date']);
 			$data['table'] = "veeds_users_history";
 			$data['where'] = "user_id = '".$_POST['user_id']."' 
-								AND user_id_search = '".$_POST['keyword']."'
+								AND user_id_search = '".$keyword."'
 								AND category = '".$_POST['category']."'";
 
 			// $reply = array('update' => $data);

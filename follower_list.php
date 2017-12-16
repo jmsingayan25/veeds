@@ -1,6 +1,10 @@
 <?php
 	include("jp_library/jp_lib.php");
 	
+	if(empty($_POST['count']) || !isset($_POST['count'])){
+		$_POST['count'] = 0;
+	}
+	
 	if(isset($_POST['user_id'])){
 		$in = "";	
 		

@@ -94,6 +94,10 @@ function jp_union($data){
 	return $GLOBALS['con']->jp_union($data);
 }
 
+function jp_escape($data){
+	return $GLOBALS['con']->jp_escape($data);
+}
+
 class jp_controller{
 	public $con;
 	protected $db;
@@ -324,6 +328,13 @@ class jp_controller{
 			return true;
 		else
 			return false;
+	}
+
+	public function jp_escape($params){
+
+		$result = $this->con->real_escape_string($params);
+
+		return $result;
 	}
 }	
 
