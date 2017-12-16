@@ -135,7 +135,92 @@
 			// 	}
 			// }
 
-			
+			if(isset($_GET['coordinates']) && isset($_GET['location'])){
+
+				$search1['select'] = "location_id, place_id";
+				$search1['table'] = "veeds_establishment";
+				$search1['where'] = "location = '".$_GET['location']."'
+										AND coordinates = '".$_GET['coordinates']."'";
+
+				if(jp_count($search1) == 0){ //check if place not exist on the table
+
+					// $tags = str_replace("establishment,point_of_interest,", "", $_GET['tags']);
+					// $trim_tags = rtrim($tags,',');
+
+					$data5['data'] = array(
+										'place_id' => $_GET['place_id'],
+										'place_name' => " ", 
+										// 'place_name' => $_GET['place_name'], 
+										'location' => $_GET['location'], 
+										'tags' => " ", 
+										// 'tags' => $trim_tags, 
+										'coordinates' => $_GET['coordinates']
+										);
+					$data5['table'] = "veeds_establishment";
+					jp_add($data5);
+				}
+				// else{
+				// 	$result3 = jp_get($search1);
+				// 	while($row3 = mysqli_fetch_assoc($result3)){
+				// 		if($row3['place_id'] == NULL){
+				// 			$update_place_id = array();
+				// 			$update_place_id['place_id'] = $_GET['place_id'];
+				// 			$update['data'] = $update_place_id;
+				// 			$update['table'] = "veeds_establishment";
+				// 			$update['where'] = "location_id = '".$row3['location_id']."'";
+				// 			jp_update($update);
+				// 		}
+				// 	}
+				// }
+
+				$data3['data'] = array(
+									'place_id' => $_GET['place_id'], 
+									'video_id' => $video_id,
+									'user_id' => $_GET['user_id'], 
+									'hashtags' => $_GET['description'],
+									'date_visit' => date('Y-m-d H:i:s') 
+									);
+				$data3['table'] = "veeds_users_visit_history";
+				jp_add($data3);
+
+				$search3['select'] = "user_id, COUNT(DISTINCT DATE_FORMAT(date_visit,'%m-%d-%y')) as visit_count";
+				$search3['table'] = "veeds_users_visit_history";
+				$search3['where'] = "user_id = '".$_GET['user_id']."' AND place_id = '".$_GET['place_id']."'";
+
+				$count_result = jp_get($search3);
+				$visit_count = mysqli_fetch_assoc($count_result);
+
+				if($visit_count['visit_count'] < 1){ //check if user visited the place for the first time
+
+					$search5['select'] = "place_id";
+					$search5['table'] = "veeds_users_place_history";
+					$search5['where'] = "place_id = '".$_GET['place_id']."'";
+
+					if(jp_count($search5) == 0){ //check if place_id not exist on the table
+
+						$add['data'] = array('place_id' => $_GET['place_id'], 'total_count' => 1);
+						$add['table'] = "veeds_users_place_history";
+						jp_add($add);
+
+					}else{ //update count of place_id if place_id already exist on the table
+
+						$search4['select'] = "total_count";
+						$search4['table'] = "veeds_users_place_history";
+						$search4['where'] = "place_id = '".$_GET['place_id']."'";
+
+						$result4 = jp_get($search4);
+						$row4 = mysqli_fetch_assoc($result4);
+
+						$visit_count = array();
+						$visit_count['total_count'] = $row4['total_count'] + 1;
+
+						$visit['data'] = $visit_count;
+						$visit['table'] = "veeds_users_place_history";
+						$visit['where'] = "place_id = '".$_GET['place_id']."'";
+						jp_update($visit);
+					}
+				}
+			}
 
 			$search['select'] = "post";
 			$search['table'] = "veeds_users";

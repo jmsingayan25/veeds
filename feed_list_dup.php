@@ -6,8 +6,8 @@
 	if(empty($_POST['count']) || !isset($_POST['count'])){
 		$_POST['count'] = 0;
 	}
-	$_POST['user_id'] = "286";
-	$_POST['logged_id'] = "286";
+	$_POST['user_id'] = "271";
+	$_POST['logged_id'] = "271";
 	$_POST['coordinates'] = "14.5910630605843,121.12628397653";
 	$_POST['city'] = "Cainta";
 	if(isset($_POST['user_id'])){
@@ -318,7 +318,7 @@
 	    												AND user_id_follow != '".$_POST['user_id']."'
 	    												AND approved = 1)".$u_extend;
 		$search39['filters'] = "ORDER BY user_id_follow ASC";
-		echo implode(" ", $search39)."<br>";
+		// echo implode(" ", $search39)."<br>";
 		if(jp_count($search39) > 0){
 			$result1 = jp_get($search39);
 			while($row = mysqli_fetch_assoc($result1)){

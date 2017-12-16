@@ -10,13 +10,13 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "182";
-	$_POST['keyword'] = "allen";
-	$_POST['coordinates'] = "14.590843,121.126404";
+	$_POST['user_id'] = "183";
+	$_POST['keyword'] = "Makati Medical Center";
+
 	if(isset($_POST['user_id']) && isset($_POST['keyword'])){
 		
-		$_POST['keyword'] = jp_escape($_POST['keyword']);
-	
+		$_POST['keyword'] = str_replace("`", "'", $_POST['keyword']);
+
 		$list = array();
 		$u_blocks = array();
 		$list['users'] = array();
@@ -54,19 +54,10 @@
 			$u_extend_names = "";
 		}
 
-		$follow['select'] = "user_id_follow";
-		$follow['table'] = "veeds_users_follow";
-		$follow['where'] = "user_id = '".$_POST['user_id']."'";
-
-		if(jp_count($follow) > 0){
-
-		}
-
 		$start = $_POST['count'] * 5;
 		$search['select'] = "DISTINCT user_id, firstname, lastname, username, personal_information, profile_pic, private";
 		$search['table'] = "veeds_users";
-		$search['where'] = "private = 0 
-							AND (LOWER(firstname) LIKE '%".strtolower($_POST['keyword'])."%' 
+		$search['where'] = "(LOWER(firstname) LIKE '%".strtolower($_POST['keyword'])."%' 
 							OR LOWER(lastname) LIKE '%".strtolower($_POST['keyword'])."%'
 							OR LOWER(username) LIKE '%".strtolower($_POST['keyword'])."%')".$u_extend_names;
 		$search['filters'] = "LIMIT ".$start.", 5";
@@ -120,8 +111,7 @@
 		$start = $_POST['count'] * 5;
 		$search1['select'] = "DISTINCT u.user_id, u.firstname, u.lastname, u.username, u.personal_information, u.profile_pic, private";
 		$search1['table'] = "veeds_users u, veeds_users_visit_history h, veeds_establishment e";
-		$search1['where'] = "u.private = 0 
-								AND u.user_id = h.user_id
+		$search1['where'] = "u.user_id = h.user_id
 								AND e.place_id = h.place_id
 								AND (LOWER(h.hashtags) LIKE '%".strtolower($_POST['keyword'])."%'
 								OR LOWER(e.place_name) LIKE '%".strtolower($_POST['keyword'])."%'

@@ -5,7 +5,7 @@
 		$_POST['count'] = 0;
 	}
 
-	$_POST['user_id'] = "183";
+	$_POST['user_id'] = "286";
 	if(isset($_POST['user_id'])){
 
 		$u_blocks = array();
@@ -34,7 +34,7 @@
 			$u_extend = "";
 		}
 					
-		$search['select'] = "a.type, a.notif_datetime, b.username, b.firstname, b.lastname, b.profile_pic, a.activity_user, a.video_id, a.notif_id, a.user_id";
+		$search['select'] = "a.type, a.notif_datetime, b.username, b.firstname, b.lastname, b.profile_pic, a.activity_user, a.video_id, a.notif_id";
 		$search['table'] = "notifications a, veeds_users b";
 		$search['where'] = "a.activity_user = b.user_id 
 							AND a.activity_user != ".$_POST['user_id']."" /* AND a.notif_datetime > DATE_SUB(NOW(), INTERVAL 24 HOUR) 
@@ -47,29 +47,46 @@
 		
 		$list['notifications'] = array();
 		
-		$types = array(
-			'like' => ' liked your post.',
-			'started_following' => ' started following you.',
-			'accepted' => ' has accept your follow request.',
-			'comment' => ' commented on your post.',
-			'tag' => ' tagged you in a post.',
-			'request' => ' has requested to follow you.'
-		);
-		
 		while($row = mysqli_fetch_assoc($result)){
 			$notif = array();
+			
+			$search1['select'] = "video_id, user_id";
+			$search1['table'] = "veeds_videos";
+			$search1['where'] = "user_id = '".$_POST['user_id']."' AND video_id = '".$row['video_id']."'";
+			// echo implode(" ", $search1)."<br>";
+			if(jp_count($search1) > 0){
+				$types = array(
+					'like' => ' liked your post.',
+					'started_following' => ' started following you.',
+					'accepted' => ' has accept your follow request.',
+					'comment' => ' commented on your post.',
+					'tag' => ' tagged you in a post.',
+					'request' => ' has requested to follow you.'
+				);
+			}else{
+				$types = array(
+					// 'like' => ' liked your post.',
+					'like' => ' also liked on the post you are following.',
+					'started_following' => ' started following you.',
+					'accepted' => ' has accept your follow request.',
+					'comment' => ' also commented on the post you are following.',
+					'tag' => ' tagged you in a post.',
+					'request' => ' has requested to follow you.'
+				);
+			}
 			
 			//$notif['body'] = $row['firstname']." ".$row['lastname'].$types[$row['type']];
 			$notif['body'] = $row['username'].$types[$row['type']];
 			$notif['time'] = $row['notif_datetime'];
 			$notif['type'] = $row['type'];
 			$notif['id']   = $row['notif_id'];
-			$notif['profile_pic'] = 'http://ec2-52-40-31-134.us-west-2.compute.amazonaws.com/veeds/profile_pics/'.$row['profile_pic'];
+			// $notif['profile_pic'] = 'http://ec2-52-40-31-134.us-west-2.compute.amazonaws.com/veeds/profile_pics/'.$row['profile_pic'];
+			$notif['profile_pic'] = 'http://192.168.1.20/veeds/profile_pics/'.$row['profile_pic'];
 			$notif['actor_id'] = $row['activity_user'];
 
 			if($row['type'] == "started_following" || $row['type']== "accepted" || $row['type']== "request"){
 				// $notif['user_id'] = $row['activity_user'];
-				$notif['user_id'] = $row['user_id'];
+				$notif['user_id'] = $_POST['user_id'];
 			}else{
 				$notif['video_id'] = $row['video_id'];
 			}
